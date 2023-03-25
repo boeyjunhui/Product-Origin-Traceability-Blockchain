@@ -8,16 +8,18 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import util.Path;
+
 public class KeyAccess {
     //access the public and private key from keystore
     public static PublicKey getPublicKey(String path) throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(path));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(Path.publicKeyPath(path)));
         X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
         return KeyFactory.getInstance("RSA").generatePublic(spec);
     }
 
     public static PrivateKey getPrivateKey(String path) throws Exception {
-        byte[] keyBytes = Files.readAllBytes(Paths.get(path));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(Path.privateKeyPath(path)));
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
         return KeyFactory.getInstance("RSA").generatePrivate(spec);
     }

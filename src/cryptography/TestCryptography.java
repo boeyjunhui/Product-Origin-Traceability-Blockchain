@@ -1,6 +1,6 @@
 package cryptography;
 
-public class TestKeyPair {
+public class TestCryptography {
 
     public static void main(String[] args) {
         Cryptography cryptography = new Cryptography();
