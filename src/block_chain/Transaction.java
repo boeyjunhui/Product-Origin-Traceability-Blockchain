@@ -12,12 +12,15 @@ public class Transaction implements Serializable {
 
     public String merkleRoot;
 
-    public List<String> dataLst = new ArrayList<>();
+    public List<String> dataList = new ArrayList<>();
 
-    public void add(String tranx) {
-        if (dataLst.size() < SIZE) {
-            dataLst.add(tranx);
+    //return true false to check of the list is full for that block
+    public boolean add(String transaction) {
+        if (dataList.size() < SIZE) {
+            dataList.add(transaction);
+            return true;
         }
+        return false;
     }
 
     //todo
@@ -25,15 +28,19 @@ public class Transaction implements Serializable {
     //	public  void setMerkleRoot(String root) {
     //		this.merkleRoot = root;
     //	}
-    public void build(List<String> tranxs) {
-        dataLst = tranxs;
-        MerkleTree mt = MerkleTree.getInstance(dataLst);
+    public void build() {
+        //dataLst = tranxs;
+        MerkleTree mt = MerkleTree.getInstance(dataList);
         mt.build();
         merkleRoot = mt.getRoot();
     }
 
     // @Override
     public String toString() {
-        return "Transaction [merkleRoot=" + merkleRoot + ", dataLst=" + dataLst + "]";
+        return "Transaction [merkleRoot=" + merkleRoot + ", dataList=" + dataList + "]";
+    }
+
+    public String[] dataList() {
+        return null;
     }
 }

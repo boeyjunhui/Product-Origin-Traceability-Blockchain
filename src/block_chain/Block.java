@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package block_chain;
 
 import hasher.Hasher;
 import java.io.Serializable;
 
-/**
- *
- * @author liewjy
- */
-public class Block implements Serializable{
+public class Block implements Serializable {
 
     private static final long serialVersionUID = 1L;
     public Header blockHeader;
@@ -21,20 +13,28 @@ public class Block implements Serializable{
     }
 
     // composition relationship
-    public Block(String previousHash) {
+    public Block(String previousHash, int index) {
         super();
-        long now = System.currentTimeMillis();
-        // constuct part object upon object construction
         this.blockHeader = new Header();
+        this.blockHeader.setIndex(index);
         this.blockHeader.setPreviousHash(previousHash);
-        this.blockHeader.setTimeStamp(now);
-        // hashing with sha256 - the input is joined with index+previousHash+now
-        String currentHash = Hasher.sha256(String.join("+", previousHash, String.valueOf(now)));
+        //current is true = add record to current block = remain timestamp
+        long now;
+        //if (current) {
+            //now = this.blockHeader.getTimeStamp();
+        //} else {
+            now = System.currentTimeMillis();
+            this.blockHeader.setTimeStamp(now);
+        //}
+
+        //set the currentHash of the new block using sha256
+        // index + previousHash + timestamp
+        String currentHash = Hasher.sha256(String.join("+", String.valueOf(index), previousHash, String.valueOf(now)));
         this.blockHeader.setCurrentHash(currentHash);
     }
 
-    // composition relationship -- inner class definition for part object
     public class Header implements Serializable {
+
         // data member
         public int index;
         public String currentHash, previousHash;
@@ -82,16 +82,18 @@ public class Block implements Serializable{
     }
 
     // aggregation relationship
-    public Transaction tranxLst;
+    public Transaction transactionList;
 
-    public void setTranxLst(Transaction tranxLst) {
-        this.tranxLst = tranxLst;
+    public void setTransactionList(Transaction transactionList) {
+        this.transactionList = transactionList;
     }
 
-    ;
+    public Transaction getTransactionList() {
+        return transactionList;
+    }
 
-	@Override
+    @Override
     public String toString() {
-        return "Block [blockHeader=" + blockHeader + ", tranxLst=" + tranxLst + "]";
+        return "Block [blockHeader=" + blockHeader + ", tranxLst=" + transactionList + "]";
     }
 }

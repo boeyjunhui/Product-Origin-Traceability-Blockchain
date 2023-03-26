@@ -8,8 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 
 public class BlockChain {
-    // data structure
 
+    // data structure
     private static LinkedList<Block> db = new LinkedList<>();
 
     private static BlockChain _instance;
@@ -26,30 +26,30 @@ public class BlockChain {
     public BlockChain(String chainFile) {
         super();
         this.chainFile = chainFile;
-        System.out.println("> Blockchain object is created!");
     }
 
-    /**
-     * genesis()
-     */
+    //create genesis block (index 0)
     public void genesis() {
-        Block genesis = new Block("0");
+        Block genesis = new Block("0", 0);
         db.add(genesis);
         persist();
     }
 
-    /**
-     * nextBlock()
-     */
+    //add a new block to the blockchain
     public void nextBlock(Block newBlock) {
         db = get();
         db.add(newBlock);
         persist();
     }
 
-    /**
-     * get()
-     */
+    //add a new block to the blockchain
+    public void lastBlock(Block currentBlock) {
+        db = get();
+        db.set(currentBlock.getBlockHeader().getIndex(), currentBlock);
+        persist();
+    }
+
+    //get data of the whole blockchain in the from of LinkedList<Block> object
     public LinkedList<Block> get() {
         try (FileInputStream fin = new FileInputStream(this.chainFile); ObjectInputStream in = new ObjectInputStream(fin);) {
             return (LinkedList<Block>) in.readObject();
@@ -59,9 +59,7 @@ public class BlockChain {
         }
     }
 
-    /**
-     * persist()
-     */
+    //store the data into the blockchain
     private void persist() {
         try (FileOutputStream fout = new FileOutputStream(this.chainFile); ObjectOutputStream out = new ObjectOutputStream(fout);) {
             out.writeObject(db);
@@ -74,6 +72,8 @@ public class BlockChain {
     /**
      * distribute()
      */
+    //todo for testing purpose for now
+    //todo remove later - no longer using
     public void distribute() {
         String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
         System.out.println(chain);

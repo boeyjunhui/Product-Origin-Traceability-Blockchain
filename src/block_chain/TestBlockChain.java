@@ -35,19 +35,34 @@ public class TestBlockChain {
             lst.add(line4);
             lst.add(line5);
 
-            tranxLst.build(lst);
+            System.out.println(tranxLst.add(line1));
+            //System.out.println(tranxLst.add(line2));
+            // System.out.println(tranxLst.add(line3));
+            // System.out.println(tranxLst.add(line4));
+            // System.out.println(tranxLst.add(line5));
 
+            // tranxLst.add(line1);
+            // tranxLst.add(line2);
+            // tranxLst.add(line3);
+            // tranxLst.add(line4);
+            // tranxLst.add(line5);
+            //tranxLst.build(lst);
+            //create the previousHash and index for generating currentHash
             String previousHash = bc.get().getLast().getBlockHeader().getCurrentHash();
-            int index = bc.get().size();
+            int index = bc.get().getLast().getBlockHeader().getIndex() + 1;
 
-            System.out.println(index);
+            System.out.println("index " + index);
 
-             Block b1 = new Block(previousHash);
-             b1.setTranxLst(tranxLst);
-             
-             bc.nextBlock(b1);
-             System.out.println(b1);
-             bc.distribute();
+            Block b1 = new Block(previousHash, index);
+            //add the transaction into the list
+            b1.setTransactionList(tranxLst);
+
+            bc.nextBlock(b1);
+
+            //todo remove
+            //System.out.println(b1);
+            //System.out.println("here");
+            bc.distribute();
 
         }
     }
