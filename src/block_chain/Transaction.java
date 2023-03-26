@@ -22,12 +22,11 @@ public class Transaction implements Serializable {
         }
         return false;
     }
-
-    //todo
-    // generate merkle root
-    //	public  void setMerkleRoot(String root) {
-    //		this.merkleRoot = root;
-    //	}
+    
+    public String getMerkleRoot() {
+        return merkleRoot;
+    }
+  
     public void build() {
         //dataLst = tranxs;
         MerkleTree mt = MerkleTree.getInstance(dataList);

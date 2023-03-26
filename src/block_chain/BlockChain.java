@@ -30,7 +30,7 @@ public class BlockChain {
 
     //create genesis block (index 0)
     public void genesis() {
-        Block genesis = new Block("0", 0);
+        Block genesis = new Block("0", 0, null);
         db.add(genesis);
         persist();
     }

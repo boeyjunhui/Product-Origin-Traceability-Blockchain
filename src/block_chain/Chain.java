@@ -33,7 +33,11 @@ public class Chain {
         Transaction transactionList = new Transaction();
         transactionList.add(transaction);
 
-        Block newBlock = new Block(previousHash, index);
+        //build merkle tree
+        transactionList.build();
+
+        Block newBlock = new Block(previousHash, index, transactionList.getMerkleRoot());
+        
         //add the transaction into the list
         newBlock.setTransactionList(transactionList);
 
@@ -66,9 +70,16 @@ public class Chain {
                 }
                 transactionList.add(transaction);
 
+                //build merkle tree
+                transactionList.build();
+
                 //add to the last block in chain
                 Block lastBlock = bc.get().getLast();
                 lastBlock.setTransactionList(transactionList);
+
+                //generate new current hash with updated merkle root
+                lastBlock.generateCurrentHash(transactionList.merkleRoot);
+
                 bc.lastBlock(lastBlock);
                 //fixme remove later
                 bc.distribute();

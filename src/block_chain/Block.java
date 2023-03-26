@@ -13,23 +13,28 @@ public class Block implements Serializable {
     }
 
     // composition relationship
-    public Block(String previousHash, int index) {
+    public Block(String previousHash, int index, String merkleRoot) {
         super();
         this.blockHeader = new Header();
         this.blockHeader.setIndex(index);
         this.blockHeader.setPreviousHash(previousHash);
-        //current is true = add record to current block = remain timestamp
-        long now;
-        //if (current) {
-            //now = this.blockHeader.getTimeStamp();
-        //} else {
-            now = System.currentTimeMillis();
-            this.blockHeader.setTimeStamp(now);
-        //}
+        long now = System.currentTimeMillis();
+        this.blockHeader.setTimeStamp(now);
+        System.out.println("mk root " + merkleRoot);
+        generateCurrentHash(merkleRoot);
 
+        
+    }
+
+    public void generateCurrentHash(String merkleRoot) {
         //set the currentHash of the new block using sha256
-        // index + previousHash + timestamp
-        String currentHash = Hasher.sha256(String.join("+", String.valueOf(index), previousHash, String.valueOf(now)));
+        // index + previousHash + timestamp + merkle root
+        String currentHash = Hasher.sha256(String.join("+",
+                String.valueOf(this.blockHeader.getIndex()),
+                this.blockHeader.getPreviousHash(),
+                String.valueOf(this.blockHeader.getTimeStamp()),
+                merkleRoot
+        ));
         this.blockHeader.setCurrentHash(currentHash);
     }
 
