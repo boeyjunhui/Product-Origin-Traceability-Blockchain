@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ProductRecord;
 
-public class Admin extends javax.swing.JFrame {
+public class SuperAdmin extends javax.swing.JFrame {
 
     ValidationController validationController = new ValidationController();
     ProductController productController = new ProductController();
@@ -20,14 +20,14 @@ public class Admin extends javax.swing.JFrame {
     /**
      * Creates new form Admin
      */
-    public Admin() {
+    public SuperAdmin() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pnlViewProduct.setVisible(true);
         pnlAddProduct.setVisible(false);
     }
 
-    public Admin(int adminID) throws IOException {
+    public SuperAdmin(int adminID) throws IOException {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pnlViewProduct.setVisible(true);
@@ -37,20 +37,12 @@ public class Admin extends javax.swing.JFrame {
     
     // clear input fields
     public void clear() {
-        txtProductUniqueCode.setText("");
         txtProductName.setText("");
         txtProductDescription.setText("");
         txtIngredient.setText("");
         txtNutrition.setText("");
         txtWeight.setText("");
         txtPrice.setText("");
-        txtExpiryDate.setText("");
-        txtHarvestDate.setText("");
-        txtFarmLocation.setText("");
-        txtProductionDate.setText("");
-        txtProductionLocation.setText("");
-        txtStorageDate.setText("");
-        txtStorageLocation.setText("");
     }
     
     // load and view product data
@@ -58,18 +50,18 @@ public class Admin extends javax.swing.JFrame {
         productRecord = productController.viewProduct();
         
         // set table column
-        String columns[] = { "Product Unique Code", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price", "Expiry Date" };
+        String columns[] = { "Product ID", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price (RM)",  "Product Unique Code" };
         
         DefaultTableModel defaultTableModel = (DefaultTableModel)tblProduct.getModel();
         defaultTableModel.setColumnIdentifiers(columns);
                 
         tblProduct.setModel(defaultTableModel);
-        defaultTableModel.setRowCount(0);
+        defaultTableModel.setRowCount( 0);
         
         // loop data into table
         for (ProductRecord productRecord : productController.viewProduct()) {
             String[] data = {
-                productRecord.productUniqueCode(), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price()), productRecord.expiryDate()
+                Integer.toString(productRecord.productID()), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price()), productRecord.productUniqueCode()
             };
             
             defaultTableModel.addRow(data);
@@ -98,40 +90,24 @@ public class Admin extends javax.swing.JFrame {
         scrpanProduct = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         pnlAddProduct = new javax.swing.JPanel();
-        lblProductUniqueCode = new javax.swing.JLabel();
         lblProductName = new javax.swing.JLabel();
         lblProductDescription = new javax.swing.JLabel();
         lblIngredient = new javax.swing.JLabel();
         lblNutrition = new javax.swing.JLabel();
         lblWeight = new javax.swing.JLabel();
         lblPrice = new javax.swing.JLabel();
-        txtProductUniqueCode = new javax.swing.JTextField();
         txtProductName = new javax.swing.JTextField();
         txtProductDescription = new javax.swing.JTextField();
         txtIngredient = new javax.swing.JTextField();
         txtNutrition = new javax.swing.JTextField();
         txtWeight = new javax.swing.JTextField();
         txtPrice = new javax.swing.JTextField();
-        lblExpiryDate = new javax.swing.JLabel();
-        lblHarvestDate = new javax.swing.JLabel();
-        lblFarmLocation = new javax.swing.JLabel();
-        lblProductionDate = new javax.swing.JLabel();
-        lblProductionLocation = new javax.swing.JLabel();
-        lblStorageDate = new javax.swing.JLabel();
-        lblStorageLocation = new javax.swing.JLabel();
-        txtExpiryDate = new javax.swing.JTextField();
-        txtHarvestDate = new javax.swing.JTextField();
-        txtFarmLocation = new javax.swing.JTextField();
-        txtProductionDate = new javax.swing.JTextField();
-        txtProductionLocation = new javax.swing.JTextField();
-        txtStorageDate = new javax.swing.JTextField();
-        txtStorageLocation = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblAddProduct = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Product Origin Tracer - Admin");
+        setTitle("Product Origin Tracer - Super Admin");
 
         pnlContainer.setBackground(new java.awt.Color(255, 255, 255));
         pnlContainer.setPreferredSize(new java.awt.Dimension(1300, 800));
@@ -193,14 +169,7 @@ public class Admin extends javax.swing.JFrame {
         tblProduct.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
@@ -228,14 +197,11 @@ public class Admin extends javax.swing.JFrame {
             .addComponent(btnAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(20, 20, 20)
             .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(82, Short.MAX_VALUE))
+            .addContainerGap(126, Short.MAX_VALUE))
     );
 
     pnlAddProduct.setBackground(new java.awt.Color(255, 255, 255));
     pnlAddProduct.setPreferredSize(new java.awt.Dimension(1300, 700));
-
-    lblProductUniqueCode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblProductUniqueCode.setText("Product Unique Code");
 
     lblProductName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
     lblProductName.setText("Product Name");
@@ -253,10 +219,7 @@ public class Admin extends javax.swing.JFrame {
     lblWeight.setText("Weight");
 
     lblPrice.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblPrice.setText("Price");
-
-    txtProductUniqueCode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtProductUniqueCode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+    lblPrice.setText("Price (RM)");
 
     txtProductName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
     txtProductName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
@@ -275,48 +238,6 @@ public class Admin extends javax.swing.JFrame {
 
     txtPrice.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
     txtPrice.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    lblExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblExpiryDate.setText("Expiry Date");
-
-    lblHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblHarvestDate.setText("Harvest Date");
-
-    lblFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblFarmLocation.setText("Farm Location");
-
-    lblProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblProductionDate.setText("Production Date");
-
-    lblProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblProductionLocation.setText("Production Location");
-
-    lblStorageDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblStorageDate.setText("Storage Date");
-
-    lblStorageLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblStorageLocation.setText("Storage Location");
-
-    txtExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtExpiryDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtHarvestDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtFarmLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtProductionDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtProductionLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtStorageDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtStorageDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtStorageLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtStorageLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
     btnSave.setBackground(new java.awt.Color(73, 161, 236));
     btnSave.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
@@ -356,141 +277,86 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(lblAddProduct)
                 .addGroup(pnlAddProductLayout.createSequentialGroup()
                     .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblProductUniqueCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblProductName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblProductDescription, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblIngredient, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblNutrition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblWeight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblWeight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(18, 18, 18)
                     .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(100, 100, 100)
                     .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(198, 198, 198)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblStorageDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtStorageDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddProductLayout.createSequentialGroup()
-                            .addComponent(lblStorageLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(18, 18, 18)
                             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtStorageLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-            .addContainerGap(184, Short.MAX_VALUE))
+                                .addComponent(txtNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+            .addContainerGap(479, Short.MAX_VALUE))
     );
     pnlAddProductLayout.setVerticalGroup(
         pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(pnlAddProductLayout.createSequentialGroup()
-            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAddProductLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(lblAddProduct)
-                    .addGap(40, 40, 40)
-                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddProductLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGap(18, 18, 18)
-            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGap(18, 18, 18)
-            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(20, 20, 20)
+            .addComponent(lblAddProduct)
+            .addGap(40, 40, 40)
+            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(txtProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(lblProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(lblIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(txtIngredient, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(18, 18, 18)
-            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(txtNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(txtWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(lblWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblStorageDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtStorageDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(18, 18, 18)
-            .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(txtWeight, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblStorageLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtStorageLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(60, 60, 60)
+                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(294, 294, 294)
             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(119, Short.MAX_VALUE))
+            .addContainerGap(165, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
     pnlContainer.setLayout(pnlContainerLayout);
     pnlContainerLayout.setHorizontalGroup(
         pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1597, Short.MAX_VALUE)
-        .addComponent(pnlViewProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 1597, Short.MAX_VALUE)
+        .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
+        .addComponent(pnlViewProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
         .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pnlAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 1593, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(pnlAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 1595, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
     );
     pnlContainerLayout.setVerticalGroup(
         pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(pnlContainerLayout.createSequentialGroup()
             .addComponent(pnlTopNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(pnlViewProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE))
+            .addComponent(pnlViewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pnlAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                .addContainerGap(54, Short.MAX_VALUE)
+                .addComponent(pnlAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -498,7 +364,7 @@ public class Admin extends javax.swing.JFrame {
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
-            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1597, Short.MAX_VALUE)
+            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
             .addGap(0, 0, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
@@ -517,8 +383,8 @@ public class Admin extends javax.swing.JFrame {
         int logoutConfirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", JOptionPane.YES_NO_OPTION);
         
         if (logoutConfirmation == JOptionPane.YES_OPTION) {
-            AdminLogin adminLogin = new AdminLogin();
-            adminLogin.setVisible(true);
+            Login login = new Login();
+            login.setVisible(true);
             this.dispose();
         }
     }//GEN-LAST:event_btnLogoutActionPerformed
@@ -531,13 +397,13 @@ public class Admin extends javax.swing.JFrame {
 
     // save add product button
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (txtProductUniqueCode.getText().equals("") || txtProductName.getText().equals("") || txtProductDescription.getText().equals("") || txtIngredient.getText().equals("") || txtNutrition.getText().equals("") || txtWeight.getText().equals("") || txtPrice.getText().equals("") || txtExpiryDate.getText().equals("") || txtHarvestDate.getText().equals("") || txtFarmLocation.getText().equals("") || txtProductionDate.getText().equals("") || txtProductionLocation.getText().equals("") || txtStorageDate.getText().equals("") || txtStorageLocation.getText().equals("")) {
+        if (txtProductName.getText().equals("") || txtProductDescription.getText().equals("") || txtIngredient.getText().equals("") || txtNutrition.getText().equals("") || txtWeight.getText().equals("") || txtPrice.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (validationController.validatePrice(txtPrice.getText()) == true) {
             JOptionPane.showMessageDialog(null, "Incorrect input format!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                ProductRecord productRecord = new ProductRecord(txtProductUniqueCode.getText(), txtProductName.getText(), txtProductDescription.getText(), txtIngredient.getText(), txtNutrition.getText(), txtWeight.getText(), Double.parseDouble(txtPrice.getText()), txtExpiryDate.getText());
+                ProductRecord productRecord = new ProductRecord(productController.calculateProductID(), txtProductName.getText(), txtProductDescription.getText(), txtIngredient.getText(), txtNutrition.getText(), txtWeight.getText(), Double.parseDouble(txtPrice.getText()), "NA");
                 
                 if (productController.addProduct(productRecord)) {
                     JOptionPane.showMessageDialog(null, "Product is added.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -546,7 +412,7 @@ public class Admin extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Failed to add product. Product unique code exist.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SuperAdmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -559,7 +425,7 @@ public class Admin extends javax.swing.JFrame {
         try {
             viewProduct();
         } catch (IOException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SuperAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -580,20 +446,21 @@ public class Admin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SuperAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SuperAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SuperAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SuperAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Admin().setVisible(true);
+                new SuperAdmin().setVisible(true);
             }
         });
     }
@@ -604,20 +471,12 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel lblAddProduct;
-    private javax.swing.JLabel lblExpiryDate;
-    private javax.swing.JLabel lblFarmLocation;
-    private javax.swing.JLabel lblHarvestDate;
     private javax.swing.JLabel lblIngredient;
     private javax.swing.JLabel lblNutrition;
     private javax.swing.JLabel lblPrice;
     private javax.swing.JLabel lblProductDescription;
     private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblProductOriginTracer;
-    private javax.swing.JLabel lblProductUniqueCode;
-    private javax.swing.JLabel lblProductionDate;
-    private javax.swing.JLabel lblProductionLocation;
-    private javax.swing.JLabel lblStorageDate;
-    private javax.swing.JLabel lblStorageLocation;
     private javax.swing.JLabel lblWeight;
     private javax.swing.JPanel pnlAddProduct;
     private javax.swing.JPanel pnlContainer;
@@ -625,19 +484,11 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JPanel pnlViewProduct;
     private javax.swing.JScrollPane scrpanProduct;
     private javax.swing.JTable tblProduct;
-    private javax.swing.JTextField txtExpiryDate;
-    private javax.swing.JTextField txtFarmLocation;
-    private javax.swing.JTextField txtHarvestDate;
     private javax.swing.JTextField txtIngredient;
     private javax.swing.JTextField txtNutrition;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtProductDescription;
     private javax.swing.JTextField txtProductName;
-    private javax.swing.JTextField txtProductUniqueCode;
-    private javax.swing.JTextField txtProductionDate;
-    private javax.swing.JTextField txtProductionLocation;
-    private javax.swing.JTextField txtStorageDate;
-    private javax.swing.JTextField txtStorageLocation;
     private javax.swing.JTextField txtWeight;
     // End of variables declaration//GEN-END:variables
 }

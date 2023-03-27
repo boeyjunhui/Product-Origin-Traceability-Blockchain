@@ -16,11 +16,20 @@ public class MainScreen extends javax.swing.JFrame {
         
         // create file if files do not exist
         try {
-            FileWriter adminFileWriter = new FileWriter("Admin.txt", true);
-            adminFileWriter.close();
+            FileWriter admin = new FileWriter("Admin.txt", true);
+            admin.close();
 
-            FileWriter productFileWriter = new FileWriter("Product.txt", true);
-            productFileWriter.close();
+            FileWriter farmer = new FileWriter("Farmer.txt", true);
+            farmer.close();
+            
+            FileWriter productionWorker = new FileWriter("ProductionWorker.txt", true);
+            productionWorker.close();
+            
+            FileWriter warehouseWorker = new FileWriter("WarehouseWorker.txt", true);
+            warehouseWorker.close();
+            
+            FileWriter product = new FileWriter("Product.txt", true);
+            product.close();
         } catch (IOException e) {
             
         }
@@ -39,7 +48,7 @@ public class MainScreen extends javax.swing.JFrame {
         lblProductUniqueCode = new javax.swing.JLabel();
         txtProductUniqueCode = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
-        btnAdminLogin = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
         lblProductOriginTracer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -67,14 +76,14 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
-        btnAdminLogin.setBackground(new java.awt.Color(245, 245, 245));
-        btnAdminLogin.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnAdminLogin.setText("Admin Login");
-        btnAdminLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-        btnAdminLogin.setOpaque(true);
-        btnAdminLogin.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setBackground(new java.awt.Color(245, 245, 245));
+        btnLogin.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnLogin.setText("Login");
+        btnLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        btnLogin.setOpaque(true);
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdminLoginActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -89,7 +98,7 @@ public class MainScreen extends javax.swing.JFrame {
             pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainScreenLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdminLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
             .addGroup(pnlMainScreenLayout.createSequentialGroup()
                 .addGap(200, 200, 200)
@@ -104,7 +113,7 @@ public class MainScreen extends javax.swing.JFrame {
             pnlMainScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainScreenLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(btnAdminLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(lblProductOriginTracer)
                 .addGap(90, 90, 90)
@@ -134,11 +143,11 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // admin login button
-    private void btnAdminLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminLoginActionPerformed
-        AdminLogin adminLogin = new AdminLogin();
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        Login adminLogin = new Login();
         adminLogin.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_btnAdminLoginActionPerformed
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     // search product button
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -147,6 +156,8 @@ public class MainScreen extends javax.swing.JFrame {
         try {
             if (txtProductUniqueCode.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill in the product unique code!", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (txtProductUniqueCode.getText().equals("NA")) {
+                JOptionPane.showMessageDialog(null, "Incorrect product unique code!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 product.searchProduct(txtProductUniqueCode.getText());
                 this.dispose();
@@ -193,7 +204,7 @@ public class MainScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdminLogin;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel lblProductOriginTracer;
     private javax.swing.JLabel lblProductUniqueCode;

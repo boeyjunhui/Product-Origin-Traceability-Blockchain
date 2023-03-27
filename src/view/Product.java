@@ -19,7 +19,7 @@ public class Product extends javax.swing.JFrame {
         initComponents();
     }
 
-    // search a product
+    // search product
     public void searchProduct(String productUniqueCode) throws FileNotFoundException, IOException {
         productRecord = productController.viewOneProduct(productUniqueCode);
         
@@ -27,19 +27,18 @@ public class Product extends javax.swing.JFrame {
             MainScreen mainScreen = new MainScreen();
             mainScreen.setVisible(true);
             
-            JOptionPane.showMessageDialog(null, "Product does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Product does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Product product = new Product();
             product.setVisible(true);
             
-            product.lblProductUniqueCode.setText(productRecord.get().productUniqueCode());
             product.lblProductName.setText(productRecord.get().productName());
             product.lblProductDescription.setText(productRecord.get().productDescription());
             product.lblIngredient.setText(productRecord.get().ingredient());
             product.lblNutrition.setText(productRecord.get().nutrition());
             product.lblWeight.setText(productRecord.get().weight());
             product.lblPrice.setText(String.valueOf(productRecord.get().price()));
-            product.lblExpiryDate.setText(productRecord.get().expiryDate());
+            product.lblProductUniqueCode.setText(productRecord.get().productUniqueCode());
         }
     }
     
@@ -125,7 +124,7 @@ public class Product extends javax.swing.JFrame {
 
         lblPrice1.setBackground(new java.awt.Color(255, 255, 255));
         lblPrice1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        lblPrice1.setText("Price");
+        lblPrice1.setText("Price (RM)");
 
         lblProductUniqueCode.setBackground(new java.awt.Color(255, 255, 255));
         lblProductUniqueCode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N

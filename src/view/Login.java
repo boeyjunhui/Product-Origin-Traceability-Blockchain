@@ -1,19 +1,22 @@
 package view;
 
-import controller.AdminController;
+import controller.SuperAdminController;
+import controller.FarmerController;
+import controller.ProductionWorkerController;
+import controller.WarehouseWorkerController;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.AdminAuthRecord;
+import model.AuthRecord;
 
-public class AdminLogin extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form AdminLogin
      */
-    public AdminLogin() {
+    public Login() {
         initComponents();
     }
 
@@ -33,10 +36,12 @@ public class AdminLogin extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtUsername = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        lblAdminLogin = new javax.swing.JLabel();
+        lblLogin = new javax.swing.JLabel();
+        cboUserRole = new javax.swing.JComboBox<>();
+        lblUserRole = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Admin Login");
+        setTitle("Login");
         setResizable(false);
 
         pnlAdminLogin.setBackground(new java.awt.Color(255, 255, 255));
@@ -70,16 +75,23 @@ public class AdminLogin extends javax.swing.JFrame {
         });
 
         txtUsername.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtUsername.setText("admin");
+        txtUsername.setText("superadmin");
         txtUsername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
         txtPassword.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtPassword.setText("admin");
+        txtPassword.setText("superadmin");
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
-        lblAdminLogin.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-        lblAdminLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblAdminLogin.setText("Admin Login");
+        lblLogin.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
+        lblLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogin.setText("Login");
+
+        cboUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cboUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select User Role", "Super Admin", "Farmer", "Production Worker", "Warehouse Worker" }));
+        cboUserRole.setSelectedIndex(1);
+
+        lblUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        lblUserRole.setText("User Role");
 
         javax.swing.GroupLayout pnlAdminLoginLayout = new javax.swing.GroupLayout(pnlAdminLogin);
         pnlAdminLogin.setLayout(pnlAdminLoginLayout);
@@ -98,7 +110,9 @@ public class AdminLogin extends javax.swing.JFrame {
                             .addComponent(lblPassword)
                             .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblUsername)
-                            .addComponent(lblAdminLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboUserRole, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUserRole))))
                 .addContainerGap(250, Short.MAX_VALUE))
         );
         pnlAdminLoginLayout.setVerticalGroup(
@@ -107,8 +121,8 @@ public class AdminLogin extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(lblAdminLogin)
-                .addGap(70, 70, 70)
+                .addComponent(lblLogin)
+                .addGap(60, 60, 60)
                 .addComponent(lblUsername)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -116,9 +130,13 @@ public class AdminLogin extends javax.swing.JFrame {
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblUserRole)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cboUserRole, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,17 +167,19 @@ public class AdminLogin extends javax.swing.JFrame {
 
     // login button
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        if (txtUsername.getText().equals("") || txtPassword.getPassword().length == 0) {
+        if (txtUsername.getText().equals("") || txtPassword.getPassword().length == 0 || cboUserRole.getSelectedItem().equals("Select User Role")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else {
-            AdminController adminController = new AdminController();
+            
+            // super admin
+        } else if (cboUserRole.getSelectedItem().equals("Super Admin")) {
+            SuperAdminController superAdminController = new SuperAdminController();
             
             try {
-                AdminAuthRecord adminAuthRecord = adminController.login(txtUsername.getText(), txtPassword.getText());
+                AuthRecord authRecord = superAdminController.login(txtUsername.getText(), txtPassword.getText());
 
-                if (adminAuthRecord.auth()) {
+                if (authRecord.auth()) {
                     JOptionPane.showMessageDialog(null, "Login successful!", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
-                    new Admin(adminAuthRecord.adminID()).setVisible(true);
+                    new SuperAdmin(authRecord.userID()).setVisible(true);
                     this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Failed to login! Incorrect username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
@@ -167,7 +187,67 @@ public class AdminLogin extends javax.swing.JFrame {
             } catch (FileNotFoundException ex) {
                 
             } catch (IOException ex) {
-                Logger.getLogger(AdminLogin.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // farmer
+        } else if (cboUserRole.getSelectedItem().equals("Farmer")) {
+            FarmerController farmerController = new FarmerController();
+            
+            try {
+                AuthRecord authRecord = farmerController.login(txtUsername.getText(), txtPassword.getText());
+
+                if (authRecord.auth()) {
+                    JOptionPane.showMessageDialog(null, "Login successful!", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    new Farmer(authRecord.userID()).setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to login! Incorrect username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (FileNotFoundException ex) {
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // production worker
+        } else if (cboUserRole.getSelectedItem().equals("Production Worker")) {
+            ProductionWorkerController productWorkerController = new ProductionWorkerController();
+            
+            try {
+                AuthRecord authRecord = productWorkerController.login(txtUsername.getText(), txtPassword.getText());
+
+                if (authRecord.auth()) {
+                    JOptionPane.showMessageDialog(null, "Login successful!", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    new ProductionWorker(authRecord.userID()).setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to login! Incorrect username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (FileNotFoundException ex) {
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            // warehouse worker
+        } else if (cboUserRole.getSelectedItem().equals("Warehouse Worker")) {
+            WarehouseWorkerController warehouseWorkerController = new WarehouseWorkerController();
+            
+            try {
+                AuthRecord authRecord = warehouseWorkerController.login(txtUsername.getText(), txtPassword.getText());
+
+                if (authRecord.auth()) {
+                    JOptionPane.showMessageDialog(null, "Login successful!", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
+                    new WarehouseWorker(authRecord.userID()).setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to login! Incorrect username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (FileNotFoundException ex) {
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -189,20 +269,21 @@ public class AdminLogin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminLogin().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }
@@ -210,8 +291,10 @@ public class AdminLogin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel lblAdminLogin;
+    private javax.swing.JComboBox<String> cboUserRole;
+    private javax.swing.JLabel lblLogin;
     private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblUserRole;
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPanel pnlAdminLogin;
     private javax.swing.JPasswordField txtPassword;
