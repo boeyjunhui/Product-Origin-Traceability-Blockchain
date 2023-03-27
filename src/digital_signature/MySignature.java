@@ -5,6 +5,7 @@ import java.security.PublicKey;
 import java.security.Signature; //signature API 
 import java.util.Base64;
 
+import util.SearchRecord;
 import util.SignificantRecord;
 
 public class MySignature {
@@ -34,16 +35,27 @@ public class MySignature {
         return sign.verify(Base64.getDecoder().decode(sig));
     }
 
-    public String signID(String data, PrivateKey key) throws Exception {
+    public String signString(String data, PrivateKey key) throws Exception {
         sign.initSign(key);
         sign.update(data.getBytes());
         return Base64.getEncoder().encodeToString(sign.sign());
     }
 
-    public boolean verifyID(String data, String sig, PublicKey key) throws Exception {
+    public boolean verifyString(String data, String sig, PublicKey key) throws Exception {
         sign.initVerify(key);
         sign.update(data.getBytes());
         return sign.verify(Base64.getDecoder().decode(sig));
     }
 
+    public String signSearch(SearchRecord data, PrivateKey key) throws Exception {
+        sign.initSign(key);
+        sign.update(data.getBytes());
+        return Base64.getEncoder().encodeToString(sign.sign());
+    }
+
+    public boolean verifySearch(SearchRecord data, String sig, PublicKey key) throws Exception {
+        sign.initVerify(key);
+        sign.update(data.getBytes());
+        return sign.verify(Base64.getDecoder().decode(sig));
+    }
 }
