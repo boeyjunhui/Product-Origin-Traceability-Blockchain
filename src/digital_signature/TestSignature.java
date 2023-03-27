@@ -1,7 +1,9 @@
 package digital_signature;
 
+
 import cryptography.Cryptography;
 import cryptography.KeyAccess;
+import util.SignificantRecord;
 
 public class TestSignature {
 
@@ -12,7 +14,9 @@ public class TestSignature {
 
         //use for test only
         String path = "test2";
-        String data = "Simple digital signature demo";
+        //String data = "Simple digital signature demo";
+
+        SignificantRecord data = new SignificantRecord("code1", "harvest date", "farm loc", null, null, null, null, null, null);
 
         //create new public and private key pair
         cryptography.CreateKeyPair(path);
