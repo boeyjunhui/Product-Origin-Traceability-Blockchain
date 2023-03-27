@@ -4,6 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import cryptography.Cryptography;
 import cryptography.KeyAccess;
@@ -12,6 +17,7 @@ import util.AddResultRecord;
 import util.SearchRecord;
 import util.SearchResultRecord;
 import util.SignificantRecord;
+import util.ViewAllRecord;
 
 public class Chain {
 
@@ -201,7 +207,7 @@ public class Chain {
             );
         }
 
-        SearchRecord searchRecord = new SearchRecord(searchResult.isPresent(),data
+        SearchRecord searchRecord = new SearchRecord(searchResult.isPresent(), data
         );
 
         Cryptography cryptography = new Cryptography();
@@ -241,5 +247,53 @@ public class Chain {
             }
         }
         return match;
+    }
+
+    public List<SignificantRecord> viewAllTransaction() throws Exception {
+        List<Block> list = new ArrayList<>();
+        list.addAll(bc.get());
+
+        List<SignificantRecord> allRecords = new ArrayList<>();
+
+        //loop through all the chain except genesis block
+        for (int i = list.size() - 1; i >= 1; i--) {
+            Block block = list.get(i);
+            for (int x = block.getTransactionList().dataList.size() - 1; x >= 0; x--) {
+                allRecords.addAll(util.Record.decodeRecord(block, x).toList());
+            }
+        }
+        //filter out the duplicated productUniqueCode (get latest)
+        List<SignificantRecord> filtered = 
+        allRecords.stream()
+        .filter(distinctBy(SignificantRecord::productUniqueCode))
+        .collect(Collectors.toList());
+
+        // System.out.println("after filter");
+        // filtered.forEach(System.out::println);
+        // System.out.println("end of after filter");
+
+        // Cryptography cryptography = new Cryptography();
+        // MySignature returnSig = new MySignature();
+
+        // //create new public and private key pair
+        // cryptography.CreateKeyPair("view");
+        // //make digital signature
+        // String returnSignature = returnSig.signView( filtered,
+        //         KeyAccess.getPrivateKey("view")
+        // );
+        // return new ViewAllRecord(filtered, returnSignature);
+        return filtered; 
+    }
+
+    //for filtering
+    private static <T> Predicate<T> distinctBy(Function<? super T, ?> keyExtractor) {
+        return new Predicate<T>() {
+            private final Set<Object> seen = ConcurrentHashMap.newKeySet();
+            @Override
+            public boolean test(T t) {
+                Object key = keyExtractor.apply(t);
+                return seen.add(key);
+            }
+        };
     }
 }
