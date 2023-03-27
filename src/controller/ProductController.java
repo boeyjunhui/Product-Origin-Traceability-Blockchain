@@ -14,7 +14,21 @@ import model.ProductRecord;
 
 public class ProductController {
     
-    // add product 
+    // calculate product id
+    public int calculateProductID() throws FileNotFoundException {
+        BufferedReader product = new BufferedReader(new FileReader("Product.txt"));
+        
+        int productID = product.lines()
+                .map(line -> line.split("//"))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .reduce((first, second) -> second)
+                .get()
+                .productID();
+        
+        return productID + 1;
+    }
+    
+    // add product
     public boolean addProduct(ProductRecord productRecord) throws FileNotFoundException, IOException {
         boolean dataExist;
 
@@ -23,13 +37,13 @@ public class ProductController {
         
         dataExist = product.lines()
                 .map(line -> line.split("//"))
-                .map(data -> new ProductRecord(data[0], data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
-                .anyMatch(productData -> productData.productUniqueCode().equals(productRecord.productUniqueCode()));
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .anyMatch(productData -> productData.productID() == productRecord.productID());
         
         if (dataExist) {
             return false;
         } else {
-            printWriter.printf("%s//%s//%s//%s//%s//%s//%s//%s//\n", productRecord.productUniqueCode(), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), productRecord.price(), productRecord.expiryDate());
+            printWriter.printf("%s//%s//%s//%s//%s//%s//%s//%s//\n", productRecord.productID(), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), productRecord.price(), productRecord.productUniqueCode());
             printWriter.close();
             return true;
         }
@@ -41,8 +55,8 @@ public class ProductController {
         
         Optional<ProductRecord> productRecord = product.lines()
                 .map(line -> line.split("//"))
-                .filter(data -> data[0].equals(String.valueOf(productUniqueCode)))
-                .map(data -> new ProductRecord(data[0], data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .filter(data -> data[7].equals(productUniqueCode))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
                 .findFirst();
 
         return productRecord;
@@ -54,7 +68,7 @@ public class ProductController {
 
         List<ProductRecord> productRecord = product.lines()
                 .map(line -> line.split("//"))
-                .map(data -> new ProductRecord(data[0], data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
                 .collect(Collectors.toList());
         
         return productRecord;
