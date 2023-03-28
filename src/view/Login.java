@@ -86,7 +86,6 @@ public class Login extends javax.swing.JFrame {
 
         cboUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         cboUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select User Role", "Super Admin", "Farmer", "Production Worker", "Warehouse Worker" }));
-        cboUserRole.setSelectedIndex(3);
 
         lblUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         lblUserRole.setText("User Role");
