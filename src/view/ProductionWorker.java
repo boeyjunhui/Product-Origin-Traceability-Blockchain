@@ -1,13 +1,17 @@
 package view;
 
+import controller.ProductionWorkerController;
+import controller.SearchController;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.DisplaySearchSignificantRecord;
 
 public class ProductionWorker extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form ProductionWorker
      */
@@ -22,7 +26,7 @@ public class ProductionWorker extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pnlAddProductionData.setVisible(true);
     }
-    
+
     // clear input fields
     public void reset() {
         txtProductUniqueCode.setText("");
@@ -41,7 +45,10 @@ public class ProductionWorker extends javax.swing.JFrame {
         txtProductID.setEnabled(false);
         txtProductID.setBackground(new java.awt.Color(250, 250, 250));
     }
-    
+
+    SearchController searchController = new SearchController();
+    ProductionWorkerController productionWorkerController = new ProductionWorkerController();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -350,17 +357,26 @@ public class ProductionWorker extends javax.swing.JFrame {
         if (txtProductUniqueCode.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in a product unique code!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // search product unique code method
-            txtHarvestDate.setText("");
-            txtFarmLocation.setText("");
-            txtProductionDate.setEnabled(true);
-            txtProductionDate.setBackground(new java.awt.Color(255, 255, 255));
-            txtProductionLocation.setEnabled(true);
-            txtProductionLocation.setBackground(new java.awt.Color(255, 255, 255));
-            txtExpiryDate.setEnabled(true);
-            txtExpiryDate.setBackground(new java.awt.Color(255, 255, 255));
-            txtProductID.setEnabled(true);
-            txtProductID.setBackground(new java.awt.Color(255, 255, 255));
+            try {
+                // search product unique code method
+                DisplaySearchSignificantRecord searchResult = searchController.search(txtProductUniqueCode.getText());
+                if (searchResult.isExist()) {
+                    txtHarvestDate.setText(searchResult.searchResult().harvestDate());
+                    txtFarmLocation.setText(searchResult.searchResult().farmLocation());
+                    txtProductionDate.setEnabled(true);
+                    txtProductionDate.setBackground(new java.awt.Color(255, 255, 255));
+                    txtProductionLocation.setEnabled(true);
+                    txtProductionLocation.setBackground(new java.awt.Color(255, 255, 255));
+                    txtExpiryDate.setEnabled(true);
+                    txtExpiryDate.setBackground(new java.awt.Color(255, 255, 255));
+                    txtProductID.setEnabled(true);
+                    txtProductID.setBackground(new java.awt.Color(255, 255, 255));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Product does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ProductionWorker.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -369,14 +385,40 @@ public class ProductionWorker extends javax.swing.JFrame {
         if (txtProductionDate.getText().equals("") || txtProductionLocation.getText().equals("") || txtExpiryDate.getText().equals("") || txtProductID.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // blockchain method
-            reset();
+            try {
+                //check if product id exist or not
+                boolean isExistProductTypeID = searchController.searchProductTypeID(txtProductID.getText());
+
+                if (isExistProductTypeID) {
+                    // blockchain method
+                    boolean isSuccess = productionWorkerController.addProductionData(
+                        txtProductUniqueCode.getText(),
+                        txtProductionDate.getText(),
+                        txtProductionLocation.getText(),
+                        txtExpiryDate.getText(),
+                        txtProductID.getText()
+                    );
+                    if (isSuccess) {
+                        JOptionPane.showMessageDialog(null, "Information added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        reset();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to add information!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Product ID does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ProductionWorker.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     // reset input fields button
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-       reset();
+        reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
     /**

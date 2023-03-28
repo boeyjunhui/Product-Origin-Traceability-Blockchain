@@ -81,7 +81,6 @@ public class ProductController {
         if (isValid) {
             if (searchResult.searchRecord().isExist()) {
                 System.out.println("data is found");
-                //System.out.println(searchResult.searchRecord().significantRecord());
 
                 significantRecord = searchResult.searchRecord().significantRecord();
                 //get insignificant data
