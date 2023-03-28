@@ -12,7 +12,6 @@ import digital_signature.MySignature;
 import model.AuthRecord;
 import model.ProductionWorkerRecord;
 import util.AddResultRecord;
-import util.SearchResultRecord;
 import util.SignificantRecord;
 
 public class ProductionWorkerController {

@@ -1,13 +1,16 @@
 package view;
 
+import controller.SearchController;
+import controller.WarehouseWorkerController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.DisplaySearchSignificantRecord;
 
 public class WarehouseWorker extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form WarehouseWorker
      */
@@ -22,7 +25,7 @@ public class WarehouseWorker extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pnlAddWarehouseData.setVisible(true);
     }
-    
+
     // clear input fields
     public void reset() {
         txtProductUniqueCode.setText("");
@@ -38,7 +41,10 @@ public class WarehouseWorker extends javax.swing.JFrame {
         txtStorageLocation.setEnabled(false);
         txtStorageLocation.setBackground(new java.awt.Color(250, 250, 250));
     }
-    
+
+    SearchController searchController = new SearchController();
+    WarehouseWorkerController warehouseWorkerController = new WarehouseWorkerController();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -368,16 +374,25 @@ public class WarehouseWorker extends javax.swing.JFrame {
         if (txtProductUniqueCode.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in a product unique code!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // search product unique code method
-            txtHarvestDate.setText("");
-            txtFarmLocation.setText("");
-            txtProductionDate.setText("");
-            txtProductionLocation.setText("");
-            txtExpiryDate.setText("");
-            txtStorageDate.setEnabled(true);
-            txtStorageDate.setBackground(new java.awt.Color(255, 255, 255));
-            txtStorageLocation.setEnabled(true);
-            txtStorageLocation.setBackground(new java.awt.Color(255, 255, 255));
+            try {
+                // search product unique code method
+                DisplaySearchSignificantRecord searchResult = searchController.search(txtProductUniqueCode.getText());
+                if (searchResult.isExist()) {
+                    txtHarvestDate.setText(searchResult.searchResult().harvestDate());
+                    txtFarmLocation.setText(searchResult.searchResult().farmLocation());
+                    txtProductionDate.setText(searchResult.searchResult().productionDate());
+                    txtProductionLocation.setText(searchResult.searchResult().productionLocation());
+                    txtExpiryDate.setText(searchResult.searchResult().expiryDate());
+                    txtStorageDate.setEnabled(true);
+                    txtStorageDate.setBackground(new java.awt.Color(255, 255, 255));
+                    txtStorageLocation.setEnabled(true);
+                    txtStorageLocation.setBackground(new java.awt.Color(255, 255, 255));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Product does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(WarehouseWorker.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -386,8 +401,23 @@ public class WarehouseWorker extends javax.swing.JFrame {
         if (txtStorageDate.getText().equals("") || txtStorageLocation.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // blockchain method
-            reset();
+            try {
+                // blockchain method
+                //check if product id exist or not
+                boolean isSuccess = warehouseWorkerController.addWarehouseData(
+                        txtProductUniqueCode.getText(),
+                        txtStorageDate.getText(),
+                        txtStorageLocation.getText()
+                );
+                if (isSuccess) {
+                    JOptionPane.showMessageDialog(null, "Information added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to add information!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(WarehouseWorker.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
