@@ -42,7 +42,7 @@ public class BlockChain {
         persist();
     }
 
-    //add a new block to the blockchain
+    //add a new transaction to current block
     public void lastBlock(Block currentBlock) {
         db = get();
         db.set(currentBlock.getBlockHeader().getIndex(), currentBlock);

@@ -14,7 +14,7 @@ public class TestBlockChainSearch {
 
         //search transaction
         //use for test only
-        String searchID = "ad7699bc-9209-4ebd-84a7-d9e86fc7fc32";
+        String searchID = "98284b8a-65d8-4e61-be7a-434a3a4bc4a9";
 
         //create search key pair
         cryptography.CreateKeyPair("id" + searchID);

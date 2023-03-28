@@ -19,7 +19,7 @@ public class TestBlockChainViewAll {
         // MySignature sig = new MySignature();
         // ViewAllRecord viewAll = chain.viewAllTransaction();
         // boolean isValid = sig.verifyView(viewAll.data(), viewAll.returnSignature(), KeyAccess.getPublicKey("view"));
-        // //check if data is untempered
+        //check if data is untempered
         // if (isValid) {
         //     if (viewAll.data().size() > 0) {
         //         System.out.println("data is found");

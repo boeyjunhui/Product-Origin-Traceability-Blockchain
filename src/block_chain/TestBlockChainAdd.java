@@ -16,32 +16,32 @@ public class TestBlockChainAdd {
 
         //use for test only
         //for first add
-        // String uuid = UUID.randomUUID().toString();
-        // SignificantRecord data = new SignificantRecord(
-        //         uuid,
-        //         "31-1-2023",
-        //         "Malaysia",
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null
-        // );
+         String uuid = UUID.randomUUID().toString();
+         SignificantRecord data = new SignificantRecord(
+                 uuid,
+                 "12-2-2023",
+                 "Indonesia",
+                 null,
+                 null,
+                 null,
+                 null,
+                 null,
+                 null
+         );
 
         //for add on after 1st entry (after farm) - need to give uuid
-        String uuid = "80ea4502-a067-4147-816a-45497c7ed1c0";
-        SignificantRecord data = new SignificantRecord(
-                uuid,
-                null,
-                null,
-                "11-1-2023",
-                "Selangor",
-                null,
-                null,
-                null,
-                null
-        );
+//        String uuid = "98284b8a-65d8-4e61-be7a-434a3a4bc4a9";
+//        SignificantRecord data = new SignificantRecord(
+//                uuid,
+//                null,
+//                "test",
+//                "11-1-2023",
+//                "Selangor",
+//                "12-1-2023",
+//                "warehouse",
+//                "20-12-2023",
+//                "id"
+//        );
 
         //create new public and private key pair
         cryptography.CreateKeyPair(uuid);

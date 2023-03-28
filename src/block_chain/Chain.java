@@ -66,9 +66,9 @@ public class Chain {
 
                 //search for existing transaction with same id
                 if (searchResult != null && searchResult.isPresent()) {
-                    System.out.println("found transaction cdc");
+                    //System.out.println("found transaction cdc");
 
-                    System.out.println(searchResult);
+                    //System.out.println(searchResult);
 
                     //set new entered data of if is null
                     String harvestDate = searchResult.get().harvestDate().equals("null") ? transaction.harvestDate() : searchResult.get().harvestDate();
@@ -268,20 +268,6 @@ public class Chain {
         .filter(distinctBy(SignificantRecord::productUniqueCode))
         .collect(Collectors.toList());
 
-        // System.out.println("after filter");
-        // filtered.forEach(System.out::println);
-        // System.out.println("end of after filter");
-
-        // Cryptography cryptography = new Cryptography();
-        // MySignature returnSig = new MySignature();
-
-        // //create new public and private key pair
-        // cryptography.CreateKeyPair("view");
-        // //make digital signature
-        // String returnSignature = returnSig.signView( filtered,
-        //         KeyAccess.getPrivateKey("view")
-        // );
-        // return new ViewAllRecord(filtered, returnSignature);
         return filtered; 
     }
 
