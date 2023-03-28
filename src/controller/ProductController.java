@@ -15,21 +15,21 @@ import model.ProductRecord;
 public class ProductController {
     
     // calculate product id
-    public int calculateProductID() throws FileNotFoundException {
+    public int calculateProductTypeID() throws FileNotFoundException {
         BufferedReader product = new BufferedReader(new FileReader("Product.txt"));
         
-        int productID = product.lines()
+        int productTypeID = product.lines()
                 .map(line -> line.split("//"))
-                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6])))
                 .reduce((first, second) -> second)
                 .get()
-                .productID();
+                .productTypeID();
         
-        return productID + 1;
+        return productTypeID + 1;
     }
     
     // add product
-    public boolean addProduct(ProductRecord productRecord) throws FileNotFoundException, IOException {
+    public boolean addProductType(ProductRecord productRecord) throws FileNotFoundException, IOException {
         boolean dataExist;
 
         PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("Product.txt", true)));
@@ -37,13 +37,13 @@ public class ProductController {
         
         dataExist = product.lines()
                 .map(line -> line.split("//"))
-                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
-                .anyMatch(productData -> productData.productID() == productRecord.productID());
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6])))
+                .anyMatch(productData -> productData.productTypeID() == productRecord.productTypeID());
         
         if (dataExist) {
             return false;
         } else {
-            printWriter.printf("%s//%s//%s//%s//%s//%s//%s//%s//\n", productRecord.productID(), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), productRecord.price(), productRecord.productUniqueCode());
+            printWriter.printf("%s//%s//%s//%s//%s//%s//%s//\n", productRecord.productTypeID(), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), productRecord.price());
             printWriter.close();
             return true;
         }
@@ -55,20 +55,20 @@ public class ProductController {
         
         Optional<ProductRecord> productRecord = product.lines()
                 .map(line -> line.split("//"))
-                .filter(data -> data[7].equals(productUniqueCode))
-                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .filter(data -> data[0].equals(productUniqueCode))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6])))
                 .findFirst();
 
         return productRecord;
     }
     
     // view all products
-    public List<ProductRecord> viewProduct() throws IOException {
+    public List<ProductRecord> viewAllProducts() throws IOException {
         BufferedReader product = new BufferedReader(new FileReader("Product.txt"));
 
         List<ProductRecord> productRecord = product.lines()
                 .map(line -> line.split("//"))
-                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6]), data[7]))
+                .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6])))
                 .collect(Collectors.toList());
         
         return productRecord;

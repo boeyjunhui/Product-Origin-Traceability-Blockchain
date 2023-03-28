@@ -47,10 +47,10 @@ public class SuperAdmin extends javax.swing.JFrame {
     
     // load and view product data
     public void viewProduct() throws IOException {
-        productRecord = productController.viewProduct();
+        productRecord = productController.viewAllProducts();
         
         // set table column
-        String columns[] = { "Product ID", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price (RM)",  "Product Unique Code" };
+        String columns[] = { "Product ID", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price (RM)" };
         
         DefaultTableModel defaultTableModel = (DefaultTableModel)tblProduct.getModel();
         defaultTableModel.setColumnIdentifiers(columns);
@@ -59,9 +59,9 @@ public class SuperAdmin extends javax.swing.JFrame {
         defaultTableModel.setRowCount( 0);
         
         // loop data into table
-        for (ProductRecord productRecord : productController.viewProduct()) {
+        for (ProductRecord productRecord : productController.viewAllProducts()) {
             String[] data = {
-                Integer.toString(productRecord.productID()), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price()), productRecord.productUniqueCode()
+                Integer.toString(productRecord.productTypeID()), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price())
             };
             
             defaultTableModel.addRow(data);
@@ -86,7 +86,7 @@ public class SuperAdmin extends javax.swing.JFrame {
         lblProductOriginTracer = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
         pnlViewProduct = new javax.swing.JPanel();
-        btnAddProduct = new javax.swing.JButton();
+        btnAddProductType = new javax.swing.JButton();
         scrpanProduct = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         pnlAddProduct = new javax.swing.JPanel();
@@ -117,7 +117,7 @@ public class SuperAdmin extends javax.swing.JFrame {
 
         lblProductOriginTracer.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
         lblProductOriginTracer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductOriginTracer.setText("Product Origin Tracer");
+        lblProductOriginTracer.setText("Product Origin Tracer - Product Type");
 
         btnLogout.setBackground(new java.awt.Color(221, 98, 98));
         btnLogout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -154,15 +154,15 @@ public class SuperAdmin extends javax.swing.JFrame {
         pnlViewProduct.setBackground(new java.awt.Color(255, 255, 255));
         pnlViewProduct.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        btnAddProduct.setBackground(new java.awt.Color(73, 161, 236));
-        btnAddProduct.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        btnAddProduct.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddProduct.setText("Add Product");
-        btnAddProduct.setBorder(null);
-        btnAddProduct.setOpaque(true);
-        btnAddProduct.addActionListener(new java.awt.event.ActionListener() {
+        btnAddProductType.setBackground(new java.awt.Color(73, 161, 236));
+        btnAddProductType.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        btnAddProductType.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddProductType.setText("Add Product Type");
+        btnAddProductType.setBorder(null);
+        btnAddProductType.setOpaque(true);
+        btnAddProductType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddProductActionPerformed(evt);
+                btnAddProductTypeActionPerformed(evt);
             }
         });
 
@@ -172,7 +172,7 @@ public class SuperAdmin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
             }
         )
 
@@ -187,14 +187,14 @@ public class SuperAdmin extends javax.swing.JFrame {
             .addGap(20, 20, 20)
             .addGroup(pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     pnlViewProductLayout.setVerticalGroup(
         pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(pnlViewProductLayout.createSequentialGroup()
             .addGap(20, 20, 20)
-            .addComponent(btnAddProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(20, 20, 20)
             .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap(126, Short.MAX_VALUE))
@@ -303,7 +303,7 @@ public class SuperAdmin extends javax.swing.JFrame {
                             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtNutrition, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtProductDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-            .addContainerGap(479, Short.MAX_VALUE))
+            .addContainerGap(184, Short.MAX_VALUE))
     );
     pnlAddProductLayout.setVerticalGroup(
         pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +332,7 @@ public class SuperAdmin extends javax.swing.JFrame {
             .addGroup(pnlAddProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(165, Short.MAX_VALUE))
+            .addContainerGap(121, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
@@ -343,7 +343,7 @@ public class SuperAdmin extends javax.swing.JFrame {
         .addComponent(pnlViewProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
         .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addComponent(pnlAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 1595, Short.MAX_VALUE)
+                .addComponent(pnlAddProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 1594, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
     );
     pnlContainerLayout.setVerticalGroup(
@@ -390,12 +390,12 @@ public class SuperAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     // add product button
-    private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
+    private void btnAddProductTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductTypeActionPerformed
         pnlViewProduct.setVisible(false);
         pnlAddProduct.setVisible(true);
-    }//GEN-LAST:event_btnAddProductActionPerformed
+    }//GEN-LAST:event_btnAddProductTypeActionPerformed
 
-    // save add product button
+    // add product save button
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (txtProductName.getText().equals("") || txtProductDescription.getText().equals("") || txtIngredient.getText().equals("") || txtNutrition.getText().equals("") || txtWeight.getText().equals("") || txtPrice.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -403,9 +403,9 @@ public class SuperAdmin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Incorrect input format!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                ProductRecord productRecord = new ProductRecord(productController.calculateProductID(), txtProductName.getText(), txtProductDescription.getText(), txtIngredient.getText(), txtNutrition.getText(), txtWeight.getText(), Double.parseDouble(txtPrice.getText()), "NA");
+                ProductRecord productRecord = new ProductRecord(productController.calculateProductTypeID(), txtProductName.getText(), txtProductDescription.getText(), txtIngredient.getText(), txtNutrition.getText(), txtWeight.getText(), Double.parseDouble(txtPrice.getText()));
                 
-                if (productController.addProduct(productRecord)) {
+                if (productController.addProductType(productRecord)) {
                     JOptionPane.showMessageDialog(null, "Product is added.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     viewProduct();
                 } else {
@@ -466,7 +466,7 @@ public class SuperAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddProduct;
+    private javax.swing.JButton btnAddProductType;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSave;

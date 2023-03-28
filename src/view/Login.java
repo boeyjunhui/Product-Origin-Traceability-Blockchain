@@ -75,11 +75,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         txtUsername.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtUsername.setText("superadmin");
+        txtUsername.setText("productionworker");
         txtUsername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
         txtPassword.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtPassword.setText("superadmin");
+        txtPassword.setText("productionworker");
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
         lblLogin.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
@@ -88,7 +88,7 @@ public class Login extends javax.swing.JFrame {
 
         cboUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         cboUserRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select User Role", "Super Admin", "Farmer", "Production Worker", "Warehouse Worker" }));
-        cboUserRole.setSelectedIndex(1);
+        cboUserRole.setSelectedIndex(3);
 
         lblUserRole.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         lblUserRole.setText("User Role");

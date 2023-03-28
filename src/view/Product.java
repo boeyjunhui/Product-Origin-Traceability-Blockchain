@@ -38,7 +38,6 @@ public class Product extends javax.swing.JFrame {
             product.lblNutrition.setText(productRecord.get().nutrition());
             product.lblWeight.setText(productRecord.get().weight());
             product.lblPrice.setText(String.valueOf(productRecord.get().price()));
-            product.lblProductUniqueCode.setText(productRecord.get().productUniqueCode());
         }
     }
     
