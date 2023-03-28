@@ -5,42 +5,57 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 import javax.swing.JOptionPane;
+import model.DisplaySearchRecord;
 import model.ProductRecord;
 
 public class Product extends javax.swing.JFrame {
 
     ProductController productController = new ProductController();
-    Optional<ProductRecord> productRecord;
-    
+    DisplaySearchRecord productRecord;
+
     /**
      * Creates new form Product
      */
     public Product() {
         initComponents();
+
     }
 
     // search product
-    public void searchProduct(String productUniqueCode) throws FileNotFoundException, IOException {
+    public void searchProduct(String productUniqueCode) throws FileNotFoundException, IOException, Exception {
         productRecord = productController.viewOneProduct(productUniqueCode);
-        
-        if (productRecord.isEmpty()) {
-            MainScreen mainScreen = new MainScreen();
-            mainScreen.setVisible(true);
-            
-            JOptionPane.showMessageDialog(null, "Product does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
+
+        if (productRecord.isExist()) {
             Product product = new Product();
             product.setVisible(true);
-            
-            product.lblProductName.setText(productRecord.get().productName());
-            product.lblProductDescription.setText(productRecord.get().productDescription());
-            product.lblIngredient.setText(productRecord.get().ingredient());
-            product.lblNutrition.setText(productRecord.get().nutrition());
-            product.lblWeight.setText(productRecord.get().weight());
-            product.lblPrice.setText(String.valueOf(productRecord.get().price()));
+
+            product.lblProductUniqueCode.setText(productRecord.significantRecord().productUniqueCode());
+            product.lblProductName.setText(productRecord.productRecord().get().productName());
+            product.lblProductDescription.setText(productRecord.productRecord().get().productDescription());
+            product.lblIngredient.setText(productRecord.productRecord().get().ingredient());
+            product.lblNutrition.setText(productRecord.productRecord().get().nutrition());
+            product.lblWeight.setText(productRecord.productRecord().get().weight());
+            product.lblPrice.setText(String.valueOf(productRecord.productRecord().get().price()));
+
+            product.lblExpiryDate.setText(productRecord.significantRecord().expiryDate());
+            product.lblHarvestDate.setText(productRecord.significantRecord().harvestDate());
+            product.lblFarmLocation.setText(productRecord.significantRecord().farmLocation());
+            product.lblProductionDate.setText(productRecord.significantRecord().productionDate());
+            product.lblProoductionLocation.setText(productRecord.significantRecord().productionLocation());
+            product.lblStorageDate.setText(productRecord.significantRecord().storageDate());
+            product.lblStorageLocation.setText(productRecord.significantRecord().storageLocation());
+
+     
+
+
+        } else {
+            MainScreen mainScreen = new MainScreen();
+            mainScreen.setVisible(true);
+
+            JOptionPane.showMessageDialog(null, "Product does not exist!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -162,6 +162,8 @@ public class MainScreen extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
             Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
