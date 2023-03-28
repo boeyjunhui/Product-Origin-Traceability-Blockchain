@@ -16,7 +16,7 @@ public class MainScreen extends javax.swing.JFrame {
         
         // create file if files do not exist
         try {
-            FileWriter admin = new FileWriter("Admin.txt", true);
+            FileWriter admin = new FileWriter("SuperAdmin.txt", true);
             admin.close();
 
             FileWriter farmer = new FileWriter("Farmer.txt", true);
