@@ -1,3 +1,4 @@
 1//Dark Choco//Dark chocolate. 70% cocoa.//Cocoa, sugar.//Carbohydrate - 10%, Fat - 6%.//250g//30.0//
 2//Milk Choco//Milk chocolate. 20% cocoa.//Cocoa, sugar, milk.//Carbohydrate - 10%, Fat - 6%.//250g//25.0//
 3//White Choco//White chocolate. 10% cocoa.//Cocoa, sugar, milk.//Carbohydrate - 10%, Fat - 6%.//250g//20.0//
+4//Caramel Choco//Chocolate with caramel. 10% cocoa.//Cocoa, caramel, sugar, salt, milk.//Carbohydrate - 10%, Fat - 6%.//270g//22.5//
