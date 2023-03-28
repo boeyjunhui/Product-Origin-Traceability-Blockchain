@@ -92,7 +92,7 @@ public class ProductController {
                         .map(data -> new ProductRecord(Integer.parseInt(data[0]), data[1], data[2], data[3], data[4], data[5], Double.parseDouble(data[6])))
                         .findFirst();
 
-                isExist =  !productRecord.isEmpty();
+                isExist = !productRecord.isEmpty();
             } else {
                 System.out.println("data not found");
                 isExist = false;
@@ -114,6 +114,12 @@ public class ProductController {
                 .collect(Collectors.toList());
 
         return productRecord;
+    }
+
+    //view all record from blockchain
+    public List<SignificantRecord> viewAllUniqueProductCode() throws Exception {
+        Chain chain = new Chain();
+        return chain.viewAllTransaction(); 
     }
 
 }

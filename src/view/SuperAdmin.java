@@ -89,6 +89,7 @@ public class SuperAdmin extends javax.swing.JFrame {
         btnAddProductType = new javax.swing.JButton();
         scrpanProduct = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
+        btnViewAllRecords = new javax.swing.JButton();
         pnlAddProduct = new javax.swing.JPanel();
         lblProductName = new javax.swing.JLabel();
         lblProductDescription = new javax.swing.JLabel();
@@ -179,6 +180,18 @@ public class SuperAdmin extends javax.swing.JFrame {
         { public boolean isCellEditable(int row, int column) { return false; }});
     scrpanProduct.setViewportView(tblProduct);
 
+    btnViewAllRecords.setBackground(new java.awt.Color(73, 161, 236));
+    btnViewAllRecords.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+    btnViewAllRecords.setForeground(new java.awt.Color(255, 255, 255));
+    btnViewAllRecords.setText("View All Records");
+    btnViewAllRecords.setBorder(null);
+    btnViewAllRecords.setOpaque(true);
+    btnViewAllRecords.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnViewAllRecordsActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout pnlViewProductLayout = new javax.swing.GroupLayout(pnlViewProduct);
     pnlViewProduct.setLayout(pnlViewProductLayout);
     pnlViewProductLayout.setHorizontalGroup(
@@ -187,14 +200,19 @@ public class SuperAdmin extends javax.swing.JFrame {
             .addGap(20, 20, 20)
             .addGroup(pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlViewProductLayout.createSequentialGroup()
+                    .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(27, 27, 27)
+                    .addComponent(btnViewAllRecords, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap(357, Short.MAX_VALUE))
     );
     pnlViewProductLayout.setVerticalGroup(
         pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(pnlViewProductLayout.createSequentialGroup()
             .addGap(20, 20, 20)
-            .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(btnAddProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnViewAllRecords, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(20, 20, 20)
             .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap(126, Short.MAX_VALUE))
@@ -429,6 +447,16 @@ public class SuperAdmin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnViewAllRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllRecordsActionPerformed
+        try {
+            // TODO add your handling code here:
+            SuperAdminRecords superAdminRecords = new SuperAdminRecords();
+            superAdminRecords.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(SuperAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnViewAllRecordsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -470,6 +498,7 @@ public class SuperAdmin extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnViewAllRecords;
     private javax.swing.JLabel lblAddProduct;
     private javax.swing.JLabel lblIngredient;
     private javax.swing.JLabel lblNutrition;
