@@ -75,11 +75,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         txtUsername.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtUsername.setText("productionworker");
+        txtUsername.setText("superadmin");
         txtUsername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
         txtPassword.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        txtPassword.setText("productionworker");
+        txtPassword.setText("superadmin");
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
         lblLogin.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N

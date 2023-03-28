@@ -1,5 +1,6 @@
 package view;
 
+import controller.FarmerController;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Farmer extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form Farmer
      */
@@ -22,13 +23,15 @@ public class Farmer extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pnlAddFarmData.setVisible(true);
     }
-    
+
     // clear input fields
     public void reset() {
         txtHarvestDate.setText("");
         txtFarmLocation.setText("");
     }
-    
+
+    FarmerController farmerController = new FarmerController();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -246,8 +249,18 @@ public class Farmer extends javax.swing.JFrame {
         if (txtHarvestDate.getText().equals("") || txtFarmLocation.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // blockchain method
-            reset();
+            try {
+                // blockchain method
+                boolean isSuccess = farmerController.addFarmData(txtHarvestDate.getText(), txtFarmLocation.getText());
+                if (isSuccess) {
+                    JOptionPane.showMessageDialog(null, "Information added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to add information!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                reset();
+            } catch (Exception ex) {
+                Logger.getLogger(Farmer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
