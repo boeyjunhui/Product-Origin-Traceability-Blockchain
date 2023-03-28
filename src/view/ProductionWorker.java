@@ -1,21 +1,12 @@
 package view;
 
-import controller.ProductController;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import model.ProductRecord;
 
 public class ProductionWorker extends javax.swing.JFrame {
-
-    ProductController productController = new ProductController();
-    List<ProductRecord> productRecord;
     
     /**
      * Creates new form ProductionWorker
@@ -23,65 +14,32 @@ public class ProductionWorker extends javax.swing.JFrame {
     public ProductionWorker() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        pnlViewProduct.setVisible(true);
-        pnlAddProductionData.setVisible(false);
+        pnlAddProductionData.setVisible(true);
     }
 
     public ProductionWorker(int productionWorkerID) throws IOException {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        pnlViewProduct.setVisible(true);
-        pnlAddProductionData.setVisible(false);
-        viewProduct();
+        pnlAddProductionData.setVisible(true);
     }
     
     // clear input fields
-    public void clear() {
+    public void reset() {
+        txtProductUniqueCode.setText("");
+        txtHarvestDate.setText("");
+        txtFarmLocation.setText("");
         txtProductionDate.setText("");
+        txtProductionDate.setEnabled(false);
+        txtProductionDate.setBackground(new java.awt.Color(250, 250, 250));
         txtProductionLocation.setText("");
+        txtProductionLocation.setEnabled(false);
+        txtProductionLocation.setBackground(new java.awt.Color(250, 250, 250));
         txtExpiryDate.setText("");
-    }
-    
-        // load and view product data
-    public void viewProduct() throws IOException {
-        btnAddProductionData.setEnabled(false);
-        
-        productRecord = productController.viewProduct();
-        
-        // set table column
-        String columns[] = { "Product ID", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price (RM)",  "Product Unique Code" };
-        
-        DefaultTableModel defaultTableModel = (DefaultTableModel)tblProduct.getModel();
-        defaultTableModel.setColumnIdentifiers(columns);
-                
-        tblProduct.setModel(defaultTableModel);
-        defaultTableModel.setRowCount( 0);
-        
-        // loop data into table
-        for (ProductRecord productRecord : productController.viewProduct()) {
-            String[] data = {
-                Integer.toString(productRecord.productID()), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price()), productRecord.productUniqueCode()
-            };
-            
-            defaultTableModel.addRow(data);
-        }
-        
-        // get data from selected row
-        tblProduct.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                btnAddProductionData.setEnabled(true);
-
-                int rows = tblProduct.getSelectedRow();
-                int row = tblProduct.convertRowIndexToModel(rows);
-                
-                // get product id
-                lblProductID.setText(defaultTableModel.getValueAt(row, 0).toString());
-            } 
-        });
-        
-        pnlViewProduct.setVisible(true);
-        pnlAddProductionData.setVisible(false);
-        clear();
+        txtExpiryDate.setEnabled(false);
+        txtExpiryDate.setBackground(new java.awt.Color(250, 250, 250));
+        txtProductID.setText("");
+        txtProductID.setEnabled(false);
+        txtProductID.setBackground(new java.awt.Color(250, 250, 250));
     }
     
     /**
@@ -97,22 +55,25 @@ public class ProductionWorker extends javax.swing.JFrame {
         pnlTopNav = new javax.swing.JPanel();
         lblProductOriginTracer = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
-        pnlViewProduct = new javax.swing.JPanel();
-        btnAddProductionData = new javax.swing.JButton();
-        scrpanProduct = new javax.swing.JScrollPane();
-        tblProduct = new javax.swing.JTable();
-        lblGuide = new javax.swing.JLabel();
         pnlAddProductionData = new javax.swing.JPanel();
-        lblExpiryDate = new javax.swing.JLabel();
+        lblHarvestDate = new javax.swing.JLabel();
+        lblFarmLocation = new javax.swing.JLabel();
         lblProductionDate = new javax.swing.JLabel();
         lblProductionLocation = new javax.swing.JLabel();
-        txtExpiryDate = new javax.swing.JTextField();
+        lblExpiryDate = new javax.swing.JLabel();
+        lblProductID = new javax.swing.JLabel();
+        txtHarvestDate = new javax.swing.JTextField();
+        txtFarmLocation = new javax.swing.JTextField();
         txtProductionDate = new javax.swing.JTextField();
         txtProductionLocation = new javax.swing.JTextField();
+        txtExpiryDate = new javax.swing.JTextField();
+        txtProductID = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         lblAddProductionData = new javax.swing.JLabel();
-        lblProductID = new javax.swing.JLabel();
+        txtProductUniqueCode = new javax.swing.JTextField();
+        lblProductUniqueCode = new javax.swing.JLabel();
+        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Product Origin Tracer - Production Worker");
@@ -125,7 +86,7 @@ public class ProductionWorker extends javax.swing.JFrame {
 
         lblProductOriginTracer.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
         lblProductOriginTracer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductOriginTracer.setText("Product Origin Tracer");
+        lblProductOriginTracer.setText("Product Origin Tracer - Production");
 
         btnLogout.setBackground(new java.awt.Color(221, 98, 98));
         btnLogout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -146,7 +107,7 @@ public class ProductionWorker extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopNavLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 22, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(lblProductOriginTracer, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(279, 279, 279))
         );
@@ -159,219 +120,221 @@ public class ProductionWorker extends javax.swing.JFrame {
                 .addGap(112, 112, 112))
         );
 
-        pnlViewProduct.setBackground(new java.awt.Color(255, 255, 255));
-        pnlViewProduct.setPreferredSize(new java.awt.Dimension(1300, 700));
+        pnlAddProductionData.setBackground(new java.awt.Color(255, 255, 255));
+        pnlAddProductionData.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        btnAddProductionData.setBackground(new java.awt.Color(73, 161, 236));
-        btnAddProductionData.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        btnAddProductionData.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddProductionData.setText("Add Production Data");
-        btnAddProductionData.setBorder(null);
-        btnAddProductionData.setOpaque(true);
-        btnAddProductionData.addActionListener(new java.awt.event.ActionListener() {
+        lblHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblHarvestDate.setText("Harvest Date");
+
+        lblFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblFarmLocation.setText("Farm Location");
+
+        lblProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblProductionDate.setText("Production Date");
+
+        lblProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblProductionLocation.setText("Production Location");
+
+        lblExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblExpiryDate.setText("Expiry Date");
+
+        lblProductID.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblProductID.setText("Product ID");
+
+        txtHarvestDate.setBackground(new java.awt.Color(250, 250, 250));
+        txtHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtHarvestDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtHarvestDate.setEnabled(false);
+
+        txtFarmLocation.setBackground(new java.awt.Color(250, 250, 250));
+        txtFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtFarmLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtFarmLocation.setEnabled(false);
+
+        txtProductionDate.setBackground(new java.awt.Color(250, 250, 250));
+        txtProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtProductionDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtProductionDate.setEnabled(false);
+
+        txtProductionLocation.setBackground(new java.awt.Color(250, 250, 250));
+        txtProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtProductionLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtProductionLocation.setEnabled(false);
+
+        txtExpiryDate.setBackground(new java.awt.Color(250, 250, 250));
+        txtExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtExpiryDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtExpiryDate.setEnabled(false);
+
+        txtProductID.setBackground(new java.awt.Color(250, 250, 250));
+        txtProductID.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtProductID.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+        txtProductID.setEnabled(false);
+
+        btnSave.setBackground(new java.awt.Color(73, 161, 236));
+        btnSave.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
+        btnSave.setText("Save");
+        btnSave.setBorder(null);
+        btnSave.setOpaque(true);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddProductionDataActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
-        tblProduct.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
+        btnReset.setBackground(new java.awt.Color(221, 98, 98));
+        btnReset.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("Reset");
+        btnReset.setToolTipText("");
+        btnReset.setBorder(null);
+        btnReset.setOpaque(true);
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
             }
-        )
+        });
 
-        { public boolean isCellEditable(int row, int column) { return false; }});
-    scrpanProduct.setViewportView(tblProduct);
+        lblAddProductionData.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
+        lblAddProductionData.setText("Add Production Data");
 
-    lblGuide.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblGuide.setText("Select a row of record to activate Add Production Data button.");
+        txtProductUniqueCode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtProductUniqueCode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
 
-    javax.swing.GroupLayout pnlViewProductLayout = new javax.swing.GroupLayout(pnlViewProduct);
-    pnlViewProduct.setLayout(pnlViewProductLayout);
-    pnlViewProductLayout.setHorizontalGroup(
-        pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlViewProductLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(lblGuide)
-                .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnAddProductionData, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(56, Short.MAX_VALUE))
-    );
-    pnlViewProductLayout.setVerticalGroup(
-        pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlViewProductLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addComponent(btnAddProductionData, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(20, 20, 20)
-            .addComponent(lblGuide)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(97, Short.MAX_VALUE))
-    );
+        lblProductUniqueCode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblProductUniqueCode.setText("Product Unique Code");
 
-    pnlAddProductionData.setBackground(new java.awt.Color(255, 255, 255));
-    pnlAddProductionData.setPreferredSize(new java.awt.Dimension(1300, 700));
+        btnSearch.setBackground(new java.awt.Color(73, 161, 236));
+        btnSearch.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setText("Search");
+        btnSearch.setBorder(null);
+        btnSearch.setOpaque(true);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
-    lblExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblExpiryDate.setText("Expiry Date");
-
-    lblProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblProductionDate.setText("Production Date");
-
-    lblProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblProductionLocation.setText("Production Location");
-
-    txtExpiryDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtExpiryDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtProductionDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtProductionDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtProductionLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtProductionLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    btnSave.setBackground(new java.awt.Color(73, 161, 236));
-    btnSave.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-    btnSave.setForeground(new java.awt.Color(255, 255, 255));
-    btnSave.setText("Save");
-    btnSave.setBorder(null);
-    btnSave.setOpaque(true);
-    btnSave.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            btnSaveActionPerformed(evt);
-        }
-    });
-
-    btnCancel.setBackground(new java.awt.Color(221, 98, 98));
-    btnCancel.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-    btnCancel.setForeground(new java.awt.Color(255, 255, 255));
-    btnCancel.setText("Cancel");
-    btnCancel.setToolTipText("");
-    btnCancel.setBorder(null);
-    btnCancel.setOpaque(true);
-    btnCancel.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            btnCancelActionPerformed(evt);
-        }
-    });
-
-    lblAddProductionData.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-    lblAddProductionData.setText("Add Production Data – Product ID: ");
-
-    lblProductID.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-
-    javax.swing.GroupLayout pnlAddProductionDataLayout = new javax.swing.GroupLayout(pnlAddProductionData);
-    pnlAddProductionData.setLayout(pnlAddProductionDataLayout);
-    pnlAddProductionDataLayout.setHorizontalGroup(
-        pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlAddProductionDataLayout = new javax.swing.GroupLayout(pnlAddProductionData);
+        pnlAddProductionData.setLayout(pnlAddProductionDataLayout);
+        pnlAddProductionDataLayout.setHorizontalGroup(
+            pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblAddProductionData)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(lblProductID))
-                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
-                        .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
                         .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblHarvestDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProductionDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblExpiryDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProductUniqueCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(100, 100, 100)
+                        .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
-                                .addComponent(lblProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
+                                .addGap(198, 198, 198)
+                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
+                                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
-                                .addComponent(lblExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(298, 298, 298)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addContainerGap(478, Short.MAX_VALUE))
-    );
-    pnlAddProductionDataLayout.setVerticalGroup(
-        pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(475, Short.MAX_VALUE))
+        );
+        pnlAddProductionDataLayout.setVerticalGroup(
+            pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddProductionDataLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addComponent(lblAddProductionData)
-                .addComponent(lblProductID))
-            .addGap(40, 40, 40)
-            .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(18, 18, 18)
-            .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(lblExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(353, 353, 353)
-            .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(131, Short.MAX_VALUE))
-    );
+                .addGap(40, 40, 40)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProductUniqueCode, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductionDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProductionLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtExpiryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(250, 250, 250)
+                .addGroup(pnlAddProductionDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(105, Short.MAX_VALUE))
+        );
 
-    javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
-    pnlContainer.setLayout(pnlContainerLayout);
-    pnlContainerLayout.setHorizontalGroup(
-        pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
-        .addComponent(pnlViewProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
-        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
+        pnlContainer.setLayout(pnlContainerLayout);
+        pnlContainerLayout.setHorizontalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1597, Short.MAX_VALUE)
+            .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlContainerLayout.createSequentialGroup()
+                    .addComponent(pnlAddProductionData, javax.swing.GroupLayout.DEFAULT_SIZE, 1591, Short.MAX_VALUE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        pnlContainerLayout.setVerticalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addComponent(pnlAddProductionData, javax.swing.GroupLayout.PREFERRED_SIZE, 1594, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 7, Short.MAX_VALUE)))
-    );
-    pnlContainerLayout.setVerticalGroup(
-        pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlContainerLayout.createSequentialGroup()
-            .addComponent(pnlTopNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(pnlViewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(120, 120, 120))
-        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
-                .addContainerGap(150, Short.MAX_VALUE)
-                .addComponent(pnlAddProductionData, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE)))
-    );
+                .addComponent(pnlTopNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(750, 750, 750))
+            .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                    .addContainerGap(54, Short.MAX_VALUE)
+                    .addComponent(pnlAddProductionData, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1601, Short.MAX_VALUE)
-            .addGap(0, 0, Short.MAX_VALUE))
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
-            .addGap(0, 0, Short.MAX_VALUE))
-    );
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1597, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
-    pack();
-    setLocationRelativeTo(null);
+        pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // logout button
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         int logoutConfirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", JOptionPane.YES_NO_OPTION);
 
@@ -382,29 +345,39 @@ public class ProductionWorker extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnAddProductionDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductionDataActionPerformed
-        pnlViewProduct.setVisible(false);
-        pnlAddProductionData.setVisible(true);
-    }//GEN-LAST:event_btnAddProductionDataActionPerformed
+    // search product unique code button
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        if (txtProductUniqueCode.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please fill in a product unique code!", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // search product unique code method
+            txtHarvestDate.setText("");
+            txtFarmLocation.setText("");
+            txtProductionDate.setEnabled(true);
+            txtProductionDate.setBackground(new java.awt.Color(255, 255, 255));
+            txtProductionLocation.setEnabled(true);
+            txtProductionLocation.setBackground(new java.awt.Color(255, 255, 255));
+            txtExpiryDate.setEnabled(true);
+            txtExpiryDate.setBackground(new java.awt.Color(255, 255, 255));
+            txtProductID.setEnabled(true);
+            txtProductID.setBackground(new java.awt.Color(255, 255, 255));
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
+    // add production data save button
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (txtProductionDate.getText().equals("") || txtProductionLocation.getText().equals("") || txtExpiryDate.getText().equals("")) {
+        if (txtProductionDate.getText().equals("") || txtProductionLocation.getText().equals("") || txtExpiryDate.getText().equals("") || txtProductID.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            // blockchain action
+            // blockchain method
+            reset();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        pnlViewProduct.setVisible(true);
-        pnlAddProductionData.setVisible(false);
-
-        try {
-            viewProduct();
-        } catch (IOException ex) {
-            Logger.getLogger(ProductionWorker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnCancelActionPerformed
+    // reset input fields button
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+       reset();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,24 +415,27 @@ public class ProductionWorker extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddProductionData;
-    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JLabel lblAddProductionData;
     private javax.swing.JLabel lblExpiryDate;
-    private javax.swing.JLabel lblGuide;
+    private javax.swing.JLabel lblFarmLocation;
+    private javax.swing.JLabel lblHarvestDate;
     private javax.swing.JLabel lblProductID;
     private javax.swing.JLabel lblProductOriginTracer;
+    private javax.swing.JLabel lblProductUniqueCode;
     private javax.swing.JLabel lblProductionDate;
     private javax.swing.JLabel lblProductionLocation;
     private javax.swing.JPanel pnlAddProductionData;
     private javax.swing.JPanel pnlContainer;
     private javax.swing.JPanel pnlTopNav;
-    private javax.swing.JPanel pnlViewProduct;
-    private javax.swing.JScrollPane scrpanProduct;
-    private javax.swing.JTable tblProduct;
     private javax.swing.JTextField txtExpiryDate;
+    private javax.swing.JTextField txtFarmLocation;
+    private javax.swing.JTextField txtHarvestDate;
+    private javax.swing.JTextField txtProductID;
+    private javax.swing.JTextField txtProductUniqueCode;
     private javax.swing.JTextField txtProductionDate;
     private javax.swing.JTextField txtProductionLocation;
     // End of variables declaration//GEN-END:variables

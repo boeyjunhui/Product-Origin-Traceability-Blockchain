@@ -16,7 +16,7 @@ public class MainScreen extends javax.swing.JFrame {
         
         // create file if files do not exist
         try {
-            FileWriter admin = new FileWriter("Admin.txt", true);
+            FileWriter admin = new FileWriter("SuperAdmin.txt", true);
             admin.close();
 
             FileWriter farmer = new FileWriter("Farmer.txt", true);
@@ -156,8 +156,6 @@ public class MainScreen extends javax.swing.JFrame {
         try {
             if (txtProductUniqueCode.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill in the product unique code!", "Warning", JOptionPane.WARNING_MESSAGE);
-            } else if (txtProductUniqueCode.getText().equals("NA")) {
-                JOptionPane.showMessageDialog(null, "Incorrect product unique code!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 product.searchProduct(txtProductUniqueCode.getText());
                 this.dispose();

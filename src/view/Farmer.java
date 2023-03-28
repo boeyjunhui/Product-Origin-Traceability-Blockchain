@@ -1,23 +1,12 @@
 package view;
 
-import controller.FarmerController;
-import controller.ProductController;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import model.ProductRecord;
 
 public class Farmer extends javax.swing.JFrame {
-
-    FarmerController farmerController = new FarmerController();
-    ProductController productController = new ProductController();
-    List<ProductRecord> productRecord;
     
     /**
      * Creates new form Farmer
@@ -25,64 +14,19 @@ public class Farmer extends javax.swing.JFrame {
     public Farmer() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        pnlViewProduct.setVisible(true);
-        pnlAddFarmData.setVisible(false);
+        pnlAddFarmData.setVisible(true);
     }
 
     public Farmer(int farmerID) throws IOException {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        pnlViewProduct.setVisible(true);
-        pnlAddFarmData.setVisible(false);
-        viewProduct();
+        pnlAddFarmData.setVisible(true);
     }
     
     // clear input fields
-    public void clear() {
+    public void reset() {
         txtHarvestDate.setText("");
         txtFarmLocation.setText("");
-    }
-    
-        // load and view product data
-    public void viewProduct() throws IOException {
-        btnAddFarmData.setEnabled(false);
-        
-        productRecord = productController.viewProduct();
-        
-        // set table column
-        String columns[] = { "Product ID", "Product Name", "Product Description", "Ingredient", "Nutrition", "Weight", "Price (RM)",  "Product Unique Code" };
-        
-        DefaultTableModel defaultTableModel = (DefaultTableModel)tblProduct.getModel();
-        defaultTableModel.setColumnIdentifiers(columns);
-                
-        tblProduct.setModel(defaultTableModel);
-        defaultTableModel.setRowCount( 0);
-        
-        // loop data into table
-        for (ProductRecord productRecord : productController.viewProduct()) {
-            String[] data = {
-                Integer.toString(productRecord.productID()), productRecord.productName(), productRecord.productDescription(), productRecord.ingredient(), productRecord.nutrition(), productRecord.weight(), Double.toString(productRecord.price()), productRecord.productUniqueCode()
-            };
-            
-            defaultTableModel.addRow(data);
-        }
-        
-        // get data from selected row
-        tblProduct.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                btnAddFarmData.setEnabled(true);
-
-                int rows = tblProduct.getSelectedRow();
-                int row = tblProduct.convertRowIndexToModel(rows);
-                
-                // get product id
-                lblProductID.setText(defaultTableModel.getValueAt(row, 0).toString());
-            } 
-        });
-        
-        pnlViewProduct.setVisible(true);
-        pnlAddFarmData.setVisible(false);
-        clear();
     }
     
     /**
@@ -98,20 +42,14 @@ public class Farmer extends javax.swing.JFrame {
         pnlTopNav = new javax.swing.JPanel();
         lblProductOriginTracer = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
-        pnlViewProduct = new javax.swing.JPanel();
-        btnAddFarmData = new javax.swing.JButton();
-        scrpanProduct = new javax.swing.JScrollPane();
-        tblProduct = new javax.swing.JTable();
-        lblGuide = new javax.swing.JLabel();
         pnlAddFarmData = new javax.swing.JPanel();
         lblHarvestDate = new javax.swing.JLabel();
         lblFarmLocation = new javax.swing.JLabel();
         txtHarvestDate = new javax.swing.JTextField();
         txtFarmLocation = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         lblAddFarmData = new javax.swing.JLabel();
-        lblProductID = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Product Origin Tracer - Farmer");
@@ -124,7 +62,7 @@ public class Farmer extends javax.swing.JFrame {
 
         lblProductOriginTracer.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
         lblProductOriginTracer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblProductOriginTracer.setText("Product Origin Tracer");
+        lblProductOriginTracer.setText("Product Origin Tracer - Farm");
 
         btnLogout.setBackground(new java.awt.Color(221, 98, 98));
         btnLogout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -145,7 +83,7 @@ public class Farmer extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopNavLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 44, Short.MAX_VALUE)
                 .addComponent(lblProductOriginTracer, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(279, 279, 279))
         );
@@ -158,212 +96,141 @@ public class Farmer extends javax.swing.JFrame {
                 .addGap(112, 112, 112))
         );
 
-        pnlViewProduct.setBackground(new java.awt.Color(255, 255, 255));
-        pnlViewProduct.setPreferredSize(new java.awt.Dimension(1300, 700));
+        pnlAddFarmData.setBackground(new java.awt.Color(255, 255, 255));
+        pnlAddFarmData.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        btnAddFarmData.setBackground(new java.awt.Color(73, 161, 236));
-        btnAddFarmData.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        btnAddFarmData.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddFarmData.setText("Add Farm Data");
-        btnAddFarmData.setBorder(null);
-        btnAddFarmData.setOpaque(true);
-        btnAddFarmData.addActionListener(new java.awt.event.ActionListener() {
+        lblHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblHarvestDate.setText("Harvest Date");
+
+        lblFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblFarmLocation.setText("Farm Location");
+
+        txtHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtHarvestDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+
+        txtFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtFarmLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
+
+        btnSave.setBackground(new java.awt.Color(73, 161, 236));
+        btnSave.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
+        btnSave.setText("Save");
+        btnSave.setBorder(null);
+        btnSave.setOpaque(true);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddFarmDataActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
-        tblProduct.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
+        btnReset.setBackground(new java.awt.Color(221, 98, 98));
+        btnReset.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setText("Reset");
+        btnReset.setToolTipText("");
+        btnReset.setBorder(null);
+        btnReset.setOpaque(true);
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
             }
-        )
+        });
 
-        { public boolean isCellEditable(int row, int column) { return false; }});
-    scrpanProduct.setViewportView(tblProduct);
+        lblAddFarmData.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
+        lblAddFarmData.setText("Add Farm Data");
 
-    lblGuide.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblGuide.setText("Select a row of record to activate Add Farm Data button.");
-
-    javax.swing.GroupLayout pnlViewProductLayout = new javax.swing.GroupLayout(pnlViewProduct);
-    pnlViewProduct.setLayout(pnlViewProductLayout);
-    pnlViewProductLayout.setHorizontalGroup(
-        pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlViewProductLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(lblGuide)
-                .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 1224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnAddFarmData, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(379, Short.MAX_VALUE))
-    );
-    pnlViewProductLayout.setVerticalGroup(
-        pnlViewProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlViewProductLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addComponent(btnAddFarmData, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(20, 20, 20)
-            .addComponent(lblGuide)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(scrpanProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(97, Short.MAX_VALUE))
-    );
-
-    pnlAddFarmData.setBackground(new java.awt.Color(255, 255, 255));
-    pnlAddFarmData.setPreferredSize(new java.awt.Dimension(1300, 700));
-
-    lblHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblHarvestDate.setText("Harvest Date");
-
-    lblFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    lblFarmLocation.setText("Farm Location");
-
-    txtHarvestDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtHarvestDate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    txtFarmLocation.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-    txtFarmLocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(219, 219, 219)));
-
-    btnSave.setBackground(new java.awt.Color(73, 161, 236));
-    btnSave.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-    btnSave.setForeground(new java.awt.Color(255, 255, 255));
-    btnSave.setText("Save");
-    btnSave.setBorder(null);
-    btnSave.setOpaque(true);
-    btnSave.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            btnSaveActionPerformed(evt);
-        }
-    });
-
-    btnCancel.setBackground(new java.awt.Color(221, 98, 98));
-    btnCancel.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-    btnCancel.setForeground(new java.awt.Color(255, 255, 255));
-    btnCancel.setText("Cancel");
-    btnCancel.setToolTipText("");
-    btnCancel.setBorder(null);
-    btnCancel.setOpaque(true);
-    btnCancel.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            btnCancelActionPerformed(evt);
-        }
-    });
-
-    lblAddFarmData.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-    lblAddFarmData.setText("Add Farm Data – Product ID: ");
-
-    lblProductID.setFont(new java.awt.Font("Arial", 1, 22)); // NOI18N
-
-    javax.swing.GroupLayout pnlAddFarmDataLayout = new javax.swing.GroupLayout(pnlAddFarmData);
-    pnlAddFarmData.setLayout(pnlAddFarmDataLayout);
-    pnlAddFarmDataLayout.setHorizontalGroup(
-        pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-            .addGap(20, 20, 20)
-            .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlAddFarmDataLayout = new javax.swing.GroupLayout(pnlAddFarmData);
+        pnlAddFarmData.setLayout(pnlAddFarmDataLayout);
+        pnlAddFarmDataLayout.setHorizontalGroup(
+            pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblAddFarmData)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(lblProductID))
-                .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                    .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                            .addGap(198, 198, 198)
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                            .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                            .addGap(100, 100, 100)
-                            .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                            .addGap(298, 298, 298)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-            .addContainerGap(184, Short.MAX_VALUE))
-    );
-    pnlAddFarmDataLayout.setVerticalGroup(
-        pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-            .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                        .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                                .addGap(198, 198, 198)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                                .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                                .addGap(100, 100, 100)
+                                .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                                .addGap(298, 298, 298)
+                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(506, Short.MAX_VALUE))
+        );
+        pnlAddFarmDataLayout.setVerticalGroup(
+            pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAddFarmDataLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addComponent(lblAddFarmData)
-                        .addComponent(lblProductID))
-                    .addGap(492, 492, 492))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddFarmDataLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(412, 412, 412)))
-            .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(122, Short.MAX_VALUE))
-    );
+                        .addGap(492, 492, 492))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddFarmDataLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHarvestDate, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFarmLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(400, 400, 400)))
+                .addGroup(pnlAddFarmDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(166, Short.MAX_VALUE))
+        );
 
-    javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
-    pnlContainer.setLayout(pnlContainerLayout);
-    pnlContainerLayout.setHorizontalGroup(
-        pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1623, Short.MAX_VALUE)
-        .addComponent(pnlViewProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1623, Short.MAX_VALUE)
-        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlContainerLayout = new javax.swing.GroupLayout(pnlContainer);
+        pnlContainer.setLayout(pnlContainerLayout);
+        pnlContainerLayout.setHorizontalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlTopNav, javax.swing.GroupLayout.DEFAULT_SIZE, 1623, Short.MAX_VALUE)
+            .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlContainerLayout.createSequentialGroup()
+                    .addComponent(pnlAddFarmData, javax.swing.GroupLayout.DEFAULT_SIZE, 1622, Short.MAX_VALUE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        pnlContainerLayout.setVerticalGroup(
+            pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContainerLayout.createSequentialGroup()
-                .addComponent(pnlAddFarmData, javax.swing.GroupLayout.DEFAULT_SIZE, 1610, Short.MAX_VALUE)
-                .addGap(0, 0, Short.MAX_VALUE)))
-    );
-    pnlContainerLayout.setVerticalGroup(
-        pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(pnlContainerLayout.createSequentialGroup()
-            .addComponent(pnlTopNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(pnlViewProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap())
-        .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
-                .addComponent(pnlAddFarmData, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE)))
-    );
+                .addComponent(pnlTopNav, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(756, 756, 756))
+            .addGroup(pnlContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContainerLayout.createSequentialGroup()
+                    .addContainerGap(53, Short.MAX_VALUE)
+                    .addComponent(pnlAddFarmData, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(9, Short.MAX_VALUE)))
+        );
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1623, Short.MAX_VALUE)
-            .addGap(0, 0, Short.MAX_VALUE))
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
-            .addGap(0, 0, Short.MAX_VALUE))
-    );
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1623, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
-    pack();
-    setLocationRelativeTo(null);
+        pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // logout button
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         int logoutConfirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", JOptionPane.YES_NO_OPTION);
 
@@ -374,38 +241,20 @@ public class Farmer extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnAddFarmDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFarmDataActionPerformed
-        pnlViewProduct.setVisible(false);
-        pnlAddFarmData.setVisible(true);
-    }//GEN-LAST:event_btnAddFarmDataActionPerformed
-
+    // add farmer data save button
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (txtHarvestDate.getText().equals("") || txtFarmLocation.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please fill in all details!", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            try {
-                if (farmerController.updateProductUniqueCode(Integer.parseInt(lblProductID.getText()))) {
-                    JOptionPane.showMessageDialog(null, "Farm data is added.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    viewProduct();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Failed to add farm data.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Farmer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            // blockchain method
+            reset();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        pnlViewProduct.setVisible(true);
-        pnlAddFarmData.setVisible(false);
-
-        try {
-            viewProduct();
-        } catch (IOException ex) {
-            Logger.getLogger(Farmer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnCancelActionPerformed
+    // reset input fields button
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        reset();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     /**
      * @param args the command line arguments
@@ -443,22 +292,16 @@ public class Farmer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddFarmData;
-    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel lblAddFarmData;
     private javax.swing.JLabel lblFarmLocation;
-    private javax.swing.JLabel lblGuide;
     private javax.swing.JLabel lblHarvestDate;
-    private javax.swing.JLabel lblProductID;
     private javax.swing.JLabel lblProductOriginTracer;
     private javax.swing.JPanel pnlAddFarmData;
     private javax.swing.JPanel pnlContainer;
     private javax.swing.JPanel pnlTopNav;
-    private javax.swing.JPanel pnlViewProduct;
-    private javax.swing.JScrollPane scrpanProduct;
-    private javax.swing.JTable tblProduct;
     private javax.swing.JTextField txtFarmLocation;
     private javax.swing.JTextField txtHarvestDate;
     // End of variables declaration//GEN-END:variables
