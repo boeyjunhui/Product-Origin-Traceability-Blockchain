@@ -69,13 +69,5 @@ public class BlockChain {
         }
     }
 
-    /**
-     * distribute()
-     */
-    //todo for testing purpose for now
-    //todo remove later - no longer using
-    public void distribute() {
-        String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
-        System.out.println(chain);
-    }
+
 }

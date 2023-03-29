@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cryptography;
 
 import java.io.File;
@@ -12,12 +8,8 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-/**
- *
- * @author liewjy
- */
-public class KeyPair {
 
+public class KeyPair {
     //generate key pair using RSA for asymmetric encryption
     private static final String ALGORITHM = "RSA";
 

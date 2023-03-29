@@ -9,7 +9,6 @@ public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     //set the block size
     public final int SIZE = 4;
-
     public String merkleRoot;
 
     public List<String> dataList = new ArrayList<>();
@@ -34,12 +33,9 @@ public class Transaction implements Serializable {
         merkleRoot = mt.getRoot();
     }
 
-    // @Override
-    public String toString() {
-        return "Transaction [merkleRoot=" + merkleRoot + ", dataList=" + dataList + "]";
-    }
-
     public String[] dataList() {
         return null;
     }
 }
+
+

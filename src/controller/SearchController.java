@@ -37,16 +37,15 @@ public class SearchController {
         //check if data is untempered
         if (isValid) {
             if (searchResult.searchRecord().isExist()) {
-                System.out.println("data is found");
-                System.out.println(searchResult.searchRecord().significantRecord());
+                //transaction found
                 significantRecord = searchResult.searchRecord().significantRecord();
                 isSuccess = true;
             } else {
-                System.out.println("data not found");
+                //transaction not found
                 isSuccess = false;
             }
         } else {
-            System.out.println("data is tampered");
+            //information tampered
             isSuccess = false;
         }
         return new DisplaySearchSignificantRecord(isSuccess, significantRecord);

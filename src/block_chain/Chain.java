@@ -17,7 +17,6 @@ import util.AddResultRecord;
 import util.SearchRecord;
 import util.SearchResultRecord;
 import util.SignificantRecord;
-import util.ViewAllRecord;
 
 public class Chain {
 
@@ -66,10 +65,6 @@ public class Chain {
 
                 //search for existing transaction with same id
                 if (searchResult != null && searchResult.isPresent()) {
-                    //System.out.println("found transaction cdc");
-
-                    //System.out.println(searchResult);
-
                     //set new entered data of if is null
                     String harvestDate = searchResult.get().harvestDate().equals("null") ? transaction.harvestDate() : searchResult.get().harvestDate();
                     String farmLocation = searchResult.get().farmLocation().equals("null") ? transaction.farmLocation() : searchResult.get().farmLocation();
@@ -122,24 +117,16 @@ public class Chain {
 
         //add the transaction into the list
         newBlock.setTransactionList(transactionList);
-
         bc.nextBlock(newBlock);
-
-        //fixme remove later
-        bc.distribute();
     }
 
     //add transaction to existing block
     private void addTransaction(String transaction) {
-        //fixme remove
-        System.out.println("add transaction " + transaction);
-
         int lastIndex = bc.get().getLast().getBlockHeader().getIndex();
         List<Block> list = new ArrayList<>();
         list.addAll(bc.get());
 
         Transaction transactionList = new Transaction();
-
         //check if it is genesis block
         if (lastIndex == 0) {
             //create a new block regardless - genesis have null transaction list
@@ -161,16 +148,11 @@ public class Chain {
 
                 //generate new current hash with updated merkle root
                 lastBlock.generateCurrentHash(transactionList.merkleRoot);
-
                 bc.lastBlock(lastBlock);
-                //fixme remove later
-                bc.distribute();
-
             } else {
                 createNewBlock(transaction);
             }
         }
-
     }
 
     //searching of item in block

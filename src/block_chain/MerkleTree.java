@@ -31,7 +31,6 @@ public class MerkleTree {
         return instance;
     }
 
-
     public void build() {
         List<String> tempList = new ArrayList<>();
 

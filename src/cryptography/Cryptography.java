@@ -14,8 +14,6 @@ public class Cryptography {
 
         KeyPair.put(publicKey, Path.publicKeyPath(path));
         KeyPair.put(privateKey, Path.privateKeyPath(path));
-
-        //return new KeyPairRecord(publicKey, privateKey);
     }
 
     public String Encrypt(String path, String data) throws Exception {

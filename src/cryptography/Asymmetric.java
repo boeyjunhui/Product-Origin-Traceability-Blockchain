@@ -23,7 +23,7 @@ public class Asymmetric {
 
     public Asymmetric() {
         /*creates asymetric key using RSA algo*/
-        this("RSA"); // calls the constructor by matching the input-args list
+        this("RSA");
     }
 
     public String encrypt(String data, PublicKey key) throws Exception {
@@ -36,8 +36,8 @@ public class Asymmetric {
         return cipherText;
     }
 
-    public String decrypt(String cipherText, PrivateKey publicKey) throws Exception {
-        cipher.init(Cipher.DECRYPT_MODE, publicKey);
+    public String decrypt(String cipherText, PrivateKey privateKey) throws Exception {
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
         // convert to byte[]
         byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
         // decrypt the byte array

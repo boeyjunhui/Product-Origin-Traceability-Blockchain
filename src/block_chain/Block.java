@@ -20,10 +20,7 @@ public class Block implements Serializable {
         this.blockHeader.setPreviousHash(previousHash);
         long now = System.currentTimeMillis();
         this.blockHeader.setTimeStamp(now);
-        System.out.println("mk root " + merkleRoot);
         generateCurrentHash(merkleRoot);
-
-        
     }
 
     public void generateCurrentHash(String merkleRoot) {
@@ -39,17 +36,10 @@ public class Block implements Serializable {
     }
 
     public class Header implements Serializable {
-
         // data member
         public int index;
         public String currentHash, previousHash;
         public long timeStamp;
-
-        @Override
-        public String toString() {
-            return "Header [index=" + index + ", currentHash=" + currentHash + ", previousHash=" + previousHash
-                    + ", timeStamp=" + timeStamp + "]";
-        }
 
         //getter setter method
         public int getIndex() {
@@ -86,7 +76,6 @@ public class Block implements Serializable {
 
     }
 
-    // aggregation relationship
     public Transaction transactionList;
 
     public void setTransactionList(Transaction transactionList) {
@@ -95,10 +84,5 @@ public class Block implements Serializable {
 
     public Transaction getTransactionList() {
         return transactionList;
-    }
-
-    @Override
-    public String toString() {
-        return "Block [blockHeader=" + blockHeader + ", tranxLst=" + transactionList + "]";
     }
 }

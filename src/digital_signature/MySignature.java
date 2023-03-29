@@ -24,7 +24,6 @@ public class MySignature {
             e.printStackTrace();
         }
     }
-    
 
     public String sign(SignificantRecord data, PrivateKey key) throws Exception {
         sign.initSign(key);
@@ -61,26 +60,5 @@ public class MySignature {
         sign.update(data.getBytes());
         return sign.verify(Base64.getDecoder().decode(sig));
     }
-
-    // public String signView(List<SignificantRecord> data, PrivateKey key) throws Exception {
-    //     sign.initSign(key);
-    //     byte[] bytes = toByteArray(data);
-    //     sign.update(bytes);
-    //     return Base64.getEncoder().encodeToString(sign.sign());
-    // }
-
-    // public boolean verifyView(List<SignificantRecord> data, String sig, PublicKey key) throws Exception {
-    //     sign.initVerify(key);
-    //     byte[] bytes = toByteArray(data);
-    //     sign.update(bytes);
-    //     return sign.verify(Base64.getDecoder().decode(sig));
-    // }
-
-    // public byte[] toByteArray(List<SignificantRecord> data) throws Exception {
-    //     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    //     ObjectOutputStream oos = new ObjectOutputStream(baos);
-    //     oos.writeObject(data);
-    //     return baos.toByteArray();
-    // }
     
 }
